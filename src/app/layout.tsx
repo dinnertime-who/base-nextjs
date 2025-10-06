@@ -5,6 +5,8 @@ import { pretendard } from "@/fonts";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@server/service/site-setting/site-setting.service";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata() {
   const siteSettings = await getSiteSettings();
 
