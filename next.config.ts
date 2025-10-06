@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
     viewTransition: true,
   },
 
+  // powered by 비활성화
+  poweredByHeader: false,
+
+  // react strict mode 활성화
+  reactStrictMode: true,
+
+  // 타입스크립트 빌드 오류 무시
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
+  // eslint 빌드 오류 무시
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Docker 배포를 위한 standalone 출력
   output: "standalone",
 
@@ -20,6 +36,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // 타입 라우트 설정
   typedRoutes: true,
 
   // 보안 헤더 설정

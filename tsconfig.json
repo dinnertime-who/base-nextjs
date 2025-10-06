@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@server/*": ["./server/*"],
-      "@tiptap-editor/*": ["./src/components/tiptap/*"]
+      "@tiptap-editor/*": ["./src/components/tiptap/*"],
+      "@constants/*": ["./src/constants/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
