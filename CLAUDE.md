@@ -103,6 +103,18 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - 사이트 메타데이터(이름, 설명, 파비콘)는 `getSiteSettings()`를 통해 데이터베이스에서 동적으로 로드됨
 - `server/service/`의 모든 데이터베이스 작업은 "server-only" import 가드 사용
 - Biome이 Next.js 및 React 도메인 규칙과 함께 린팅 및 포맷팅 처리
+- 루트 레이아웃에 `force-dynamic` 설정으로 동적 렌더링 강제
+
+### 에러 처리
+
+**에러 페이지:**
+- `src/app/not-found.tsx` - 404 페이지 (존재하지 않는 페이지)
+- `src/app/error.tsx` - 런타임 에러 페이지 (일반 컴포넌트 에러)
+- `src/app/global-error.tsx` - 글로벌 에러 페이지 (루트 레이아웃 에러, 인라인 CSS 사용)
+
+**에러 페이지 차이점:**
+- `error.tsx`: 컴포넌트 레벨 에러를 캐치하며, 부모 레이아웃은 유지됨
+- `global-error.tsx`: 루트 `layout.tsx`의 에러를 캐치하며, 자체 `<html>`, `<body>` 태그 필요. 프로덕션 빌드에서만 제대로 동작함
 
 ## 환경 변수
 
