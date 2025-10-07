@@ -22,6 +22,12 @@ export const auth = betterAuth({
       },
     },
   },
+  account: {
+    accountLinking: {
+      allowDifferentEmails: true,
+      trustedProviders: ["naver", "google", "kakao"],
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
