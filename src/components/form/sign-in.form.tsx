@@ -3,6 +3,8 @@
 import { SignInSchema } from "@shared/schema/sign-in.schema";
 import { useAppForm } from "./core/app-form";
 import { cn, wait } from "@/lib/utils";
+import { authClient } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 type FormMeta = {
   signInType: "admin" | "platform";
@@ -19,6 +21,7 @@ export const SignInForm = ({
   className?: string;
   signInType: FormMeta["signInType"];
 }) => {
+  const router = useRouter();
   const form = useAppForm({
     defaultValues: { email: "", password: "" },
     validators: {
@@ -27,8 +30,16 @@ export const SignInForm = ({
     onSubmitMeta: defaultMeta,
     onSubmit: async ({ value, meta }) => {
       await wait(1000);
-      // Do something with form data
-      alert(JSON.stringify(value, null, 2));
+      await authClient.signIn.email({
+        email: value.email,
+        password: value.password,
+      });
+
+      if (meta.signInType === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
     },
   });
 

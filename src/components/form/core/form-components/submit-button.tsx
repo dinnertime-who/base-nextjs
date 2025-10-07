@@ -21,7 +21,7 @@ export const SubmitButton = ({
         <Button
           className={cn(className, "w-full")}
           type="submit"
-          disabled={!canSubmit}
+          disabled={isSubmitting}
           {...props}
         >
           {isSubmitting ? submittingNode : children}

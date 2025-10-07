@@ -43,9 +43,13 @@ export const NumberField = ({ className, ...props }: Props) => {
       />
 
       {isInvalid && (
-        <span className=" text-sm">
-          {field.state.meta.errors.map((error) => error?.message).join(", ")}
-        </span>
+        <ul className="text-xs">
+          {field.state.meta.errors
+            .map((error) => error?.message)
+            .map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+        </ul>
       )}
     </div>
   );

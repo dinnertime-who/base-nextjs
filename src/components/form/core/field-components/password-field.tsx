@@ -31,7 +31,7 @@ export const PasswordField = ({ className, ...props }: Props) => {
   return (
     <div
       className={cn(
-        "group grid w-full gap-2 data-[invalid=true]:text-destructive",
+        "group grid w-full text-start gap-2 data-[invalid=true]:text-destructive",
         className
       )}
       data-invalid={isInvalid}
@@ -60,9 +60,13 @@ export const PasswordField = ({ className, ...props }: Props) => {
       </InputGroup>
 
       {isInvalid && (
-        <span className=" text-sm">
-          {field.state.meta.errors.map((error) => error?.message).join(", ")}
-        </span>
+        <ul className="text-xs">
+          {field.state.meta.errors
+            .map((error) => error?.message)
+            .map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+        </ul>
       )}
     </div>
   );
