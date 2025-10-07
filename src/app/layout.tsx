@@ -4,6 +4,7 @@ import { ReactQueryProvider } from "@/components/react-query/react-query-provide
 import { pretendard } from "@/fonts";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@server/service/site-setting/site-setting.service";
+import { DialogService } from "@/components/dialog-service/dialog-service";
 
 export const dynamic = "force-dynamic";
 
@@ -33,9 +34,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="scroll-smooth scroll-pt-(--document-scroll-pt)">
+    <html
+      lang="ko"
+      className="scroll-smooth scroll-pt-(--document-scroll-pt)"
+      data-scroll-behavior="smooth"
+    >
       <body className={cn(pretendard.className, pretendard.variable)}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
+
+        <DialogService />
       </body>
     </html>
   );

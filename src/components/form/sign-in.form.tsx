@@ -5,6 +5,7 @@ import { useAppForm } from "./core/app-form";
 import { cn, wait } from "@/lib/utils";
 import { authClient } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import { useDialogService } from "@/hooks/use-dialog-service";
 
 type FormMeta = {
   signInType: "admin" | "platform";
