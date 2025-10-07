@@ -66,7 +66,7 @@ export const HeadingButton = React.forwardRef<
       children,
       ...buttonProps
     },
-    ref
+    ref,
   ) => {
     const { editor } = useTiptapEditor(providedEditor);
     const {
@@ -90,7 +90,7 @@ export const HeadingButton = React.forwardRef<
         if (event.defaultPrevented) return;
         handleToggle();
       },
-      [handleToggle, onClick]
+      [handleToggle, onClick],
     );
 
     if (!isVisible) {
@@ -124,7 +124,7 @@ export const HeadingButton = React.forwardRef<
         )}
       </Button>
     );
-  }
+  },
 );
 
 HeadingButton.displayName = "HeadingButton";

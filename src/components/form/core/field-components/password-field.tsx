@@ -1,3 +1,5 @@
+"use client";
+
 import { Label } from "@/components/ui/label";
 import { useFieldContext } from "../app-form";
 import { useId, useState } from "react";
@@ -38,6 +40,7 @@ export const PasswordField = ({ className, ...props }: Props) => {
       <InputGroup aria-invalid={isInvalid}>
         <InputGroupInput
           type={showPassword ? "text" : "password"}
+          className="text-sm"
           id={id}
           value={field.state.value}
           onBlur={field.handleBlur}

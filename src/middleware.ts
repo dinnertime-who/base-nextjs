@@ -1,7 +1,7 @@
 import { getDeviceType } from "@server/lib/user-agent";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { DEVICE_TYPE_HEADER } from "../constants/header";
+import { DEVICE_TYPE_HEADER } from "@shared/constants/header";
 
 export async function middleware(request: NextRequest) {
   // RSC 요청 제외

@@ -56,7 +56,7 @@ export const HeadingDropdownMenu = React.forwardRef<
       onOpenChange,
       ...buttonProps
     },
-    ref
+    ref,
   ) => {
     const { editor } = useTiptapEditor(providedEditor);
     const [isOpen, setIsOpen] = React.useState(false);
@@ -72,7 +72,7 @@ export const HeadingDropdownMenu = React.forwardRef<
         setIsOpen(open);
         onOpenChange?.(open);
       },
-      [canToggle, editor, onOpenChange]
+      [canToggle, editor, onOpenChange],
     );
 
     if (!isVisible) {
@@ -121,7 +121,7 @@ export const HeadingDropdownMenu = React.forwardRef<
         </DropdownMenuContent>
       </DropdownMenu>
     );
-  }
+  },
 );
 
 HeadingDropdownMenu.displayName = "HeadingDropdownMenu";

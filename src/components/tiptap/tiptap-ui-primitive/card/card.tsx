@@ -9,7 +9,7 @@ const Card = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
     return (
       <div ref={ref} className={cn("tiptap-card", className)} {...props} />
     );
-  }
+  },
 );
 Card.displayName = "Card";
 
@@ -28,7 +28,7 @@ const CardBody = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
     return (
       <div ref={ref} className={cn("tiptap-card-body", className)} {...props} />
     );
-  }
+  },
 );
 CardBody.displayName = "CardBody";
 

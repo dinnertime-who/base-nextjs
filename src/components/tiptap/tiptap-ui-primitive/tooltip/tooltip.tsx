@@ -50,10 +50,10 @@ interface TooltipContextValue extends UseFloatingReturn<ReferenceType> {
   open: boolean;
   setOpen: (open: boolean) => void;
   getReferenceProps: (
-    userProps?: React.HTMLProps<HTMLElement>
+    userProps?: React.HTMLProps<HTMLElement>,
   ) => Record<string, unknown>;
   getFloatingProps: (
-    userProps?: React.HTMLProps<HTMLDivElement>
+    userProps?: React.HTMLProps<HTMLDivElement>,
   ) => Record<string, unknown>;
 }
 
@@ -113,7 +113,7 @@ function useTooltip({
       ...interactions,
       ...data,
     }),
-    [open, setOpen, interactions, data]
+    [open, setOpen, interactions, data],
   );
 }
 
@@ -124,7 +124,7 @@ function useTooltipContext() {
 
   if (context == null) {
     throw new Error(
-      "Tooltip components must be wrapped in <TooltipProvider />"
+      "Tooltip components must be wrapped in <TooltipProvider />",
     );
   }
 
@@ -180,7 +180,7 @@ export const TooltipTrigger = React.forwardRef<
         ...props,
         ...(typeof children.props === "object" ? children.props : {}),
         ...dataAttributes,
-      })
+      }),
     );
   }
 
@@ -200,7 +200,7 @@ export const TooltipContent = React.forwardRef<
   TooltipContentProps
 >(function TooltipContent(
   { style, children, portal = true, portalProps = {}, ...props },
-  propRef
+  propRef,
 ) {
   const context = useTooltipContext();
   const ref = useMergeRefs([context.refs.setFloating, propRef]);

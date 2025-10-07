@@ -65,7 +65,7 @@ export const ListButton = React.forwardRef<HTMLButtonElement, ListButtonProps>(
       children,
       ...buttonProps
     },
-    ref
+    ref,
   ) => {
     const { editor } = useTiptapEditor(providedEditor);
     const {
@@ -89,7 +89,7 @@ export const ListButton = React.forwardRef<HTMLButtonElement, ListButtonProps>(
         if (event.defaultPrevented) return;
         handleToggle();
       },
-      [handleToggle, onClick]
+      [handleToggle, onClick],
     );
 
     if (!isVisible) {
@@ -123,7 +123,7 @@ export const ListButton = React.forwardRef<HTMLButtonElement, ListButtonProps>(
         )}
       </Button>
     );
-  }
+  },
 );
 
 ListButton.displayName = "ListButton";

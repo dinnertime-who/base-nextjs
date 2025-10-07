@@ -14,7 +14,7 @@ interface ToolbarProps extends BaseProps {
 }
 
 const useToolbarNavigation = (
-  toolbarRef: React.RefObject<HTMLDivElement | null>
+  toolbarRef: React.RefObject<HTMLDivElement | null>,
 ) => {
   const [items, setItems] = React.useState<HTMLElement[]>([]);
 
@@ -22,8 +22,8 @@ const useToolbarNavigation = (
     if (!toolbarRef.current) return [];
     return Array.from(
       toolbarRef.current.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), [role="button"]:not([disabled]), [tabindex="0"]:not([disabled])'
-      )
+        'button:not([disabled]), [role="button"]:not([disabled]), [tabindex="0"]:not([disabled])',
+      ),
     );
   }, [toolbarRef]);
 
@@ -98,7 +98,7 @@ export const Toolbar = React.forwardRef<HTMLDivElement, ToolbarProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 Toolbar.displayName = "Toolbar";
 
@@ -112,13 +112,13 @@ export const ToolbarGroup = React.forwardRef<HTMLDivElement, BaseProps>(
     >
       {children}
     </div>
-  )
+  ),
 );
 ToolbarGroup.displayName = "ToolbarGroup";
 
 export const ToolbarSeparator = React.forwardRef<HTMLDivElement, BaseProps>(
   ({ ...props }, ref) => (
     <Separator ref={ref} orientation="vertical" decorative {...props} />
-  )
+  ),
 );
 ToolbarSeparator.displayName = "ToolbarSeparator";

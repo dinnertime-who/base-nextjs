@@ -72,7 +72,7 @@ export const HEADING_SHORTCUT_KEYS: Record<Level, string> = {
 export function canToggle(
   editor: Editor | null,
   level?: Level,
-  turnInto: boolean = true
+  turnInto: boolean = true,
 ): boolean {
   if (!editor || !editor.isEditable) return false;
   if (
@@ -111,7 +111,7 @@ export function canToggle(
  */
 export function isHeadingActive(
   editor: Editor | null,
-  level?: Level | Level[]
+  level?: Level | Level[],
 ): boolean {
   if (!editor || !editor.isEditable) return false;
 
@@ -129,7 +129,7 @@ export function isHeadingActive(
  */
 export function toggleHeading(
   editor: Editor | null,
-  level: Level | Level[]
+  level: Level | Level[],
 ): boolean {
   if (!editor || !editor.isEditable) return false;
 
@@ -176,7 +176,7 @@ export function toggleHeading(
     }
 
     const isActive = levels.some((l) =>
-      editor.isActive("heading", { level: l })
+      editor.isActive("heading", { level: l }),
     );
 
     const toggle = isActive

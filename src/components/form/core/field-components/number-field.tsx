@@ -1,3 +1,5 @@
+"use client";
+
 import { Label } from "@/components/ui/label";
 import { useFieldContext } from "../app-form";
 import { useId } from "react";
@@ -11,9 +13,9 @@ type Props = Omit<
   label?: string;
 };
 
-export const TextField = ({ className, ...props }: Props) => {
+export const NumberField = ({ className, ...props }: Props) => {
   const id = useId();
-  const field = useFieldContext<string>();
+  const field = useFieldContext<number>();
   const isInvalid =
     field.state.meta.isTouched &&
     field.state.meta.isBlurred &&
@@ -30,11 +32,12 @@ export const TextField = ({ className, ...props }: Props) => {
     >
       {props.label && <Label htmlFor={id}>{props.label}</Label>}
       <Input
-        type="text"
+        type="number"
+        className="text-sm"
         id={id}
         value={field.state.value}
         onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
         {...props}
         aria-invalid={isInvalid}
       />

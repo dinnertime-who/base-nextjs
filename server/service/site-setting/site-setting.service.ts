@@ -13,7 +13,7 @@ export const getSiteSettings = async () => {
 
 export const upsertSiteSetting = async (
   key: SiteSettingEnum,
-  value: string
+  value: string,
 ) => {
   const result = await db
     .insert(siteSetting)
