@@ -2,9 +2,16 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
-import { emailOTP, admin, organization, jwt, role } from "better-auth/plugins";
+import {
+  emailOTP,
+  admin,
+  organization,
+  createAuthMiddleware,
+} from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import * as bcrypt from "bcrypt-ts";
+import { user } from "@server/db/schema";
+import { eq } from "drizzle-orm";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -47,6 +54,15 @@ export const auth = betterAuth({
       role: { type: "string", input: true },
     },
   },
+  session: {
+    expiresIn: 60 * 60 * 24 * 1, // 1 day
+    updateAge: 60 * 60 * 12, // 12 hours
+    freshAge: 60 * 60 * 1, // 1 hour
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5, // 5 minutes
+    },
+  },
   plugins: [
     nextCookies(),
     emailOTP({
@@ -56,6 +72,5 @@ export const auth = betterAuth({
     }),
     admin(),
     organization(),
-    jwt(),
   ],
 });

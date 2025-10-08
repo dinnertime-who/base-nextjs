@@ -7,6 +7,8 @@ import {
   SetUpAdminUserResponse,
 } from "@shared/contract/auth/contract";
 import { SetUpAdminUserSchema } from "@shared/schema/set-up-admin-user.schema";
+import { tryCatch } from "@shared/try-catch";
+import { APIError } from "better-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -27,7 +29,30 @@ export async function POST(request: NextRequest) {
   }
 
   const { email, password, name } = data;
-  await setupAdminUser({ email, password, name });
+
+  const { error: setupError } = await tryCatch(() => {
+    return setupAdminUser({ email, password, name });
+  });
+
+  if (setupError) {
+    if (setupError instanceof APIError) {
+      if (setupError.statusCode === 422) {
+        return NextResponse.json(
+          { error: "이미 사용중인 이메일입니다." },
+          { status: 422 }
+        );
+      }
+
+      return NextResponse.json(
+        { error: setupError.body?.error || setupError.status },
+        { status: setupError.statusCode }
+      );
+    }
+    return NextResponse.json(
+      { error: "알 수 없는 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ ok: true } satisfies SetUpAdminUserResponse, {
     status: 200,

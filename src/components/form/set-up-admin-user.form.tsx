@@ -1,41 +1,50 @@
 "use client";
 
+import { API_URL } from "@shared/constants/urls";
 import { useAppForm } from "./core/app-form";
 import { cn, wait } from "@/lib/utils";
 import { authContract } from "@shared/contract/auth/contract";
 import { SetUpAdminUserSchema } from "@shared/schema/set-up-admin-user.schema";
 import { initClient } from "@ts-rest/core";
 import { useRouter } from "next/navigation";
-
-const client = initClient(authContract, {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL!,
-});
+import { useDialogService } from "@/hooks/use-dialog-service";
 
 export const SetUpAdminUserForm = ({ className }: { className?: string }) => {
   const router = useRouter();
+  const dialogService = useDialogService();
   const form = useAppForm({
     defaultValues: { email: "", password: "", name: "" },
     validators: {
       onChange: SetUpAdminUserSchema,
     },
-    onSubmit: async ({ value, meta }) => {
+    onSubmit: async ({ value }) => {
       await wait(1000);
+
+      const client = initClient(authContract, {
+        baseUrl: API_URL,
+      });
 
       const res = await client.setupAdminUser({
         body: value,
       });
 
       if (res.status === 200) {
-        alert("설정이 완료되었습니다.");
+        dialogService.alert("설정이 완료되었습니다.");
         router.push("/admin/sign-in");
         return;
       }
 
-      if (res.status === 400 || res.status === 409) {
-        alert(res.body.error);
+      if (
+        res.status === 400 ||
+        res.status === 409 ||
+        res.status === 422 ||
+        res.status === 500
+      ) {
+        dialogService.alert(res.body.error);
+        return;
       }
 
-      alert("알 수 없는 오류가 발생했습니다.");
+      dialogService.alert("알 수 없는 오류가 발생했습니다.");
     },
   });
 
