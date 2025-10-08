@@ -1,46 +1,28 @@
 "use client";
 
-import { SignInSchema } from "@shared/schema/sign-in.schema";
 import { useAppForm } from "./core/app-form";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useAuthContract } from "@/hooks/contract/use-auth-contract";
-import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { SignUpSchema } from "@shared/schema/sign-up.schema";
 import { tryCatch } from "@shared/try-catch";
 import { useDialogService } from "@/hooks/use-dialog-service";
-import { useEffect } from "react";
 
-type FormMeta = {
-  signInType: "admin" | "platform";
-};
-
-const defaultMeta: FormMeta = {
-  signInType: "platform",
-};
-
-export const SignInForm = ({
-  className,
-  signInType,
-}: {
-  className?: string;
-  signInType: FormMeta["signInType"];
-}) => {
-  const router = useRouter();
-  const { getSession, signOut } = useAuthContract();
-  const { signInEmail } = useAuthContract();
+export const SignUpForm = ({ className }: { className?: string }) => {
   const dialogService = useDialogService();
+  const { signUpEmail } = useAuthContract();
+  const router = useRouter();
   const form = useAppForm({
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", name: "" },
     validators: {
-      onChange: SignInSchema,
+      onChange: SignUpSchema,
     },
-    onSubmitMeta: defaultMeta,
-    onSubmit: async ({ value, meta }) => {
+    onSubmit: async ({ value }) => {
       const { data, error } = await tryCatch(async () => {
-        return await signInEmail.mutateAsync({
+        return await signUpEmail.mutateAsync({
           email: value.email,
           password: value.password,
+          name: value.name,
         });
       });
 
@@ -49,19 +31,12 @@ export const SignInForm = ({
         return;
       }
 
-      if (meta.signInType === "admin") {
-        router.push("/admin");
-      } else {
-        router.push("/");
-      }
+      await dialogService.alert(
+        "인증메일이 발송되었습니다. 메일을 확인해주세요."
+      );
+      router.push("/sign-in");
     },
   });
-
-  useEffect(() => {
-    if (getSession.data) {
-      signOut.mutate();
-    }
-  }, [getSession.data]);
 
   return (
     <form
@@ -69,7 +44,7 @@ export const SignInForm = ({
       onSubmit={async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        await form.handleSubmit({ signInType });
+        await form.handleSubmit();
       }}
     >
       <form.AppForm>
@@ -87,15 +62,16 @@ export const SignInForm = ({
               <field.PasswordField placeholder="비밀번호를 입력해주세요." />
             )}
           ></form.AppField>
+
+          <form.AppField
+            name="name"
+            children={(field) => (
+              <field.TextField placeholder="이름을 입력해주세요." />
+            )}
+          ></form.AppField>
         </form.Fieldset>
 
-        <form.SubmitButton>로그인</form.SubmitButton>
-        <Link
-          className={cn(buttonVariants({ variant: "outline" }), "w-full mt-2")}
-          href="/sign-up"
-        >
-          회원가입
-        </Link>
+        <form.SubmitButton>회원가입</form.SubmitButton>
       </form.AppForm>
     </form>
   );

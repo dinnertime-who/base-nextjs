@@ -25,7 +25,7 @@ export async function setupAdminUser(data: SetUpAdminUserSchemaType) {
 
   await db
     .update(user)
-    .set({ role: "admin" })
+    .set({ role: "admin", emailVerified: true })
     .where(eq(user.id, result.user.id));
 
   return result;

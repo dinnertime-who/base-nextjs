@@ -19,7 +19,7 @@ export const SubmitButton = ({
       selector={(state) => [state.canSubmit, state.isSubmitting]}
       children={([canSubmit, isSubmitting]) => (
         <Button
-          className={cn(className, "w-full")}
+          className={cn("w-full cursor-pointer", className)}
           type="submit"
           disabled={isSubmitting}
           {...props}

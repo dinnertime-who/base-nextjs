@@ -3,8 +3,10 @@ import { GoogleSignOn } from "@/components/social-sign-on/google-sign-on";
 import { NaverSignOn } from "@/components/social-sign-on/naver-sign-on";
 import { KakaoSignOn } from "@/components/social-sign-on/kakao-sign-on";
 import { Separator } from "@/components/ui/separator";
+import { auth } from "@server/auth";
+import { headers } from "next/headers";
 
-export default function SignInPage() {
+export default async function SignInPage() {
   return (
     <section className="grid place-items-center h-screen">
       <article className="w-full max-w-md text-center px-4">

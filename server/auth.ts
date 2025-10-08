@@ -2,16 +2,9 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
-import {
-  emailOTP,
-  admin,
-  organization,
-  createAuthMiddleware,
-} from "better-auth/plugins";
+import { admin, organization } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import * as bcrypt from "bcrypt-ts";
-import { user } from "@server/db/schema";
-import { eq } from "drizzle-orm";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -20,6 +13,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     password: {
       hash(password) {
         return bcrypt.hash(password, 10);
@@ -27,6 +21,15 @@ export const auth = betterAuth({
       verify({ password, hash }) {
         return bcrypt.compare(password, hash);
       },
+    },
+  },
+  emailVerification: {
+    enabled: true,
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, token, url }, request) => {
+      console.log(`Sending verification email to ${user.email}: ${token}`);
+      console.log(url);
     },
   },
   account: {
@@ -51,7 +54,7 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      role: { type: "string", input: true },
+      role: { type: "string", input: true, required: false },
     },
   },
   session: {
@@ -63,14 +66,5 @@ export const auth = betterAuth({
       maxAge: 60 * 5, // 5 minutes
     },
   },
-  plugins: [
-    nextCookies(),
-    emailOTP({
-      sendVerificationOTP: async ({ email, otp }) => {
-        console.log(`Sending verification OTP to ${email}: ${otp}`);
-      },
-    }),
-    admin(),
-    organization(),
-  ],
+  plugins: [nextCookies(), admin(), organization()],
 });

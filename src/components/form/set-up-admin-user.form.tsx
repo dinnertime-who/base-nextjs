@@ -1,35 +1,26 @@
 "use client";
 
-import { API_URL } from "@shared/constants/urls";
 import { useAppForm } from "./core/app-form";
-import { cn, wait } from "@/lib/utils";
-import { authContract } from "@shared/contract/auth/contract";
+import { cn } from "@/lib/utils";
 import { SetUpAdminUserSchema } from "@shared/schema/set-up-admin-user.schema";
-import { initClient } from "@ts-rest/core";
 import { useRouter } from "next/navigation";
 import { useDialogService } from "@/hooks/use-dialog-service";
+import { useAuthContract } from "@/hooks/contract/use-auth-contract";
 
 export const SetUpAdminUserForm = ({ className }: { className?: string }) => {
   const router = useRouter();
   const dialogService = useDialogService();
+  const { setupAdminUser } = useAuthContract();
   const form = useAppForm({
     defaultValues: { email: "", password: "", name: "" },
     validators: {
       onChange: SetUpAdminUserSchema,
     },
     onSubmit: async ({ value }) => {
-      await wait(1000);
-
-      const client = initClient(authContract, {
-        baseUrl: API_URL,
-      });
-
-      const res = await client.setupAdminUser({
-        body: value,
-      });
+      const res = await setupAdminUser.mutateAsync(value);
 
       if (res.status === 200) {
-        dialogService.alert("설정이 완료되었습니다.");
+        await dialogService.alert("설정이 완료되었습니다.");
         router.push("/admin/sign-in");
         return;
       }
@@ -40,11 +31,11 @@ export const SetUpAdminUserForm = ({ className }: { className?: string }) => {
         res.status === 422 ||
         res.status === 500
       ) {
-        dialogService.alert(res.body.error);
+        await dialogService.alert(res.body.error);
         return;
       }
 
-      dialogService.alert("알 수 없는 오류가 발생했습니다.");
+      await dialogService.alert("알 수 없는 오류가 발생했습니다.");
     },
   });
 

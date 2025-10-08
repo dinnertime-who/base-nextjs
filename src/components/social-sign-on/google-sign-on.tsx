@@ -1,18 +1,15 @@
 "use client";
 
-import { authClient } from "@/lib/auth";
 import { Button } from "../ui/button";
+import { useAuthContract } from "@/hooks/contract/use-auth-contract";
 
 export const GoogleSignOn = () => {
+  const { signInSocial } = useAuthContract();
   return (
     <Button
       variant="outline"
-      onClick={() => {
-        authClient.signIn.social({
-          provider: "google",
-          callbackURL: "/",
-        });
-      }}
+      className="cursor-pointer"
+      onClick={() => signInSocial.mutateAsync("google")}
     >
       Google로 로그인하기
     </Button>
