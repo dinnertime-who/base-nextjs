@@ -1,5 +1,6 @@
 // src/lib/email.ts
 import { render } from "@react-email/components";
+import { ResetPasswordEmail } from "@server/emails/templates/reset-password-email";
 import { VerificationEmail } from "@server/emails/templates/verification-email";
 import nodemailer from "nodemailer";
 import type { ReactElement } from "react";
@@ -48,5 +49,19 @@ export const sendVerificationEmail = async ({
     to,
     subject: `[${process.env.NEXT_PUBLIC_APP_NAME}] 회원가입을 완료해주세요.`,
     template: VerificationEmail({ verificationUrl: url }),
+  });
+};
+
+export const sendResetPasswordEmail = async ({
+  to,
+  url,
+}: {
+  to: string;
+  url: string;
+}) => {
+  return sendEmail({
+    to,
+    subject: `[${process.env.NEXT_PUBLIC_APP_NAME}] 비밀번호 재설정`,
+    template: ResetPasswordEmail({ resetUrl: url }),
   });
 };

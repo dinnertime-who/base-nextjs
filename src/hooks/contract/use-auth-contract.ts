@@ -10,7 +10,6 @@ export const useAuthContract = () => {
     queryKey: ["session"],
     queryFn: async () => {
       const res = await authClient.getSession();
-      console.log(res.data);
       return res.data;
     },
   });
@@ -91,6 +90,32 @@ export const useAuthContract = () => {
     },
   });
 
+  const requestPasswordReset = useMutation({
+    mutationFn: async (email: string) => {
+      const res = await authClient.requestPasswordReset({
+        email,
+        redirectTo: "/reset-password",
+      });
+      if (res.data) {
+        return res.data;
+      }
+      throw new Error(res.error.message);
+    },
+  });
+
+  const resetPassword = useMutation({
+    mutationFn: async (data: { newPassword: string; token: string }) => {
+      const res = await authClient.resetPassword({
+        newPassword: data.newPassword,
+        token: data.token,
+      });
+      if (res.data) {
+        return res.data;
+      }
+      throw new Error(res.error.message);
+    },
+  });
+
   return {
     getSession,
     setupAdminUser,
@@ -98,5 +123,7 @@ export const useAuthContract = () => {
     signInEmail,
     signUpEmail,
     signOut,
+    requestPasswordReset,
+    resetPassword,
   };
 };

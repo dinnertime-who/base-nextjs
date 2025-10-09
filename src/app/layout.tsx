@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { ReactQueryProvider } from "@/components/react-query/react-query-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { pretendard } from "@/fonts";
 import { cn } from "@/lib/utils";
 import { getSiteSettings } from "@server/service/site-setting/site-setting.service";
@@ -40,7 +41,9 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body className={cn(pretendard.className, pretendard.variable)}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </ReactQueryProvider>
 
         <DialogService />
       </body>

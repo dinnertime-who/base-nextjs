@@ -8,7 +8,10 @@ import * as bcrypt from "bcrypt-ts";
 import { user } from "@server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
-import { sendVerificationEmail } from "./service/email/email.service";
+import {
+  sendResetPasswordEmail,
+  sendVerificationEmail,
+} from "./service/email/email.service";
 import { tryCatch } from "@shared/try-catch";
 
 export const auth = betterAuth({
@@ -31,6 +34,14 @@ export const auth = betterAuth({
       verify({ password, hash }) {
         return bcrypt.compare(password, hash);
       },
+    },
+    sendResetPassword: async ({ user: emailUser, url }, request) => {
+      const { error } = await tryCatch(async () => {
+        await sendResetPasswordEmail({ to: emailUser.email, url });
+      });
+      if (error) {
+        console.error(error);
+      }
     },
   },
   emailVerification: {
