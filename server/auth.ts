@@ -1,6 +1,7 @@
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
 import { user } from "@server/db/schema";
+import { userVerificationQueue } from "@server/queues/user-verification.queue";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
 import { tryCatch } from "@shared/try-catch";
 import * as bcrypt from "bcrypt-ts";
@@ -61,16 +62,15 @@ export const auth = betterAuth({
         throw new Error("메일 발송 도중 문제가 발생했습니다.");
       }
 
-      setTimeout(async () => {
-        const targetUser = await db.query.user.findFirst({
-          columns: { emailVerified: true },
-          where: eq(user.id, emailUser.id),
-        });
-
-        if (targetUser) {
-          await db.delete(user).where(eq(user.id, emailUser.id));
-        }
-      }, VERIFICATION_EXPIRES_IN * 1000);
+      // BullMQ로 삭제 작업 예약 (정확히 VERIFICATION_EXPIRES_IN 후 실행)
+      await userVerificationQueue.add(
+        "delete-unverified-user",
+        { userId: emailUser.id },
+        {
+          delay: VERIFICATION_EXPIRES_IN * 1000,
+          jobId: `delete-unverified-${emailUser.id}`, // 중복 방지
+        },
+      );
     },
   },
   account: {
