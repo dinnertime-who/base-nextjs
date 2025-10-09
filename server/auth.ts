@@ -1,19 +1,16 @@
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
-import { user } from "@server/db/schema";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
-import { tryCatch } from "@shared/try-catch";
 import * as bcrypt from "bcrypt-ts";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins";
-import { eq } from "drizzle-orm";
-import { addDeleteUnverifiedUser } from "../workers/queues/user.queue";
 import {
-  sendResetPasswordEmail,
-  sendVerificationEmail,
-} from "./service/email/email.service";
+  addSendResetPasswordEmail,
+  addSendVerificationEmail,
+} from "../workers/queues/email.queue";
+import { addDeleteUnverifiedUser } from "../workers/queues/user.queue";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -37,13 +34,8 @@ export const auth = betterAuth({
       },
     },
     sendResetPassword: async ({ user: emailUser, url }, _request) => {
-      const { error } = await tryCatch(async () => {
-        await sendResetPasswordEmail({ to: emailUser.email, url });
-      });
-      if (error) {
-        // TODO: 메일 발송 에러 로깅 추가
-        throw new Error("메일 발송 도중 문제가 발생했습니다.");
-      }
+      // BullMQ로 비밀번호 재설정 이메일 발송 작업 등록
+      await addSendResetPasswordEmail({ to: emailUser.email, url });
     },
   },
   emailVerification: {
@@ -52,15 +44,12 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     expiresIn: VERIFICATION_EXPIRES_IN,
     sendVerificationEmail: async ({ user: emailUser, url }, _request) => {
-      const { error } = await tryCatch(async () => {
-        await sendVerificationEmail({ to: emailUser.email, url });
+      // BullMQ로 이메일 발송 작업 등록
+      await addSendVerificationEmail({
+        to: emailUser.email,
+        url,
+        userId: emailUser.id,
       });
-
-      if (error) {
-        await db.delete(user).where(eq(user.id, emailUser.id));
-        // TODO: 메일 발송 에러 로깅 추가
-        throw new Error("메일 발송 도중 문제가 발생했습니다.");
-      }
 
       // BullMQ로 삭제 작업 예약 (정확히 VERIFICATION_EXPIRES_IN 후 실행)
       await addDeleteUnverifiedUser({
