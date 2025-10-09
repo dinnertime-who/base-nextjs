@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: process.env.NEXT_PUBLIC_BASE_URL!,
+        hostname: process.env.NEXT_PUBLIC_IMAGE_HOSTING_DOMAIN!,
       },
     ],
   },

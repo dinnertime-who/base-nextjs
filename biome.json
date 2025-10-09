@@ -20,9 +20,6 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
-      },
-      "nursery": {
-        "noConsole": "warn"
       }
     },
     "domains": {
