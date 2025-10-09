@@ -8,7 +8,7 @@ import * as bcrypt from "bcrypt-ts";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { admin, organization } from "better-auth/plugins";
+import { admin } from "better-auth/plugins";
 import { eq } from "drizzle-orm";
 import {
   sendResetPasswordEmail,
@@ -83,14 +83,38 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      async mapProfileToUser(profile) {
+        return {
+          ...profile,
+          email: `${profile.sub}@google.com`,
+          emailVerified: true,
+          email_verified: true,
+        };
+      },
     },
     naver: {
       clientId: process.env.NAVER_CLIENT_ID ?? "",
       clientSecret: process.env.NAVER_CLIENT_SECRET ?? "",
+      async mapProfileToUser(profile) {
+        return {
+          ...profile,
+          email: `${profile.response.id}@naver.com`,
+          emailVerified: true,
+          email_verified: true,
+        };
+      },
     },
     kakao: {
       clientId: process.env.KAKAO_CLIENT_ID ?? "",
       clientSecret: process.env.KAKAO_CLIENT_SECRET ?? "",
+      async mapProfileToUser(profile) {
+        return {
+          ...profile,
+          email: `${profile.id}@kakao.com`,
+          emailVerified: true,
+          email_verified: true,
+        };
+      },
     },
   },
   user: {
@@ -107,5 +131,5 @@ export const auth = betterAuth({
       maxAge: 60 * 5, // 5 minutes
     },
   },
-  plugins: [nextCookies(), admin(), organization()],
+  plugins: [nextCookies(), admin()],
 });
