@@ -66,17 +66,22 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - `server/db/` - Drizzle ORM 설정 및 데이터베이스 연결
 - `server/db/schema/` - 데이터베이스 스키마 정의 (인증 테이블, 사이트 설정)
 - `server/service/` - 서버 사이드 비즈니스 로직 및 데이터 접근 계층
+- `server/prefetches/` - React Query prefetch 함수 (서버 컴포넌트용)
 - `server/lib/` - 서버 전용 유틸리티 함수
 
 **클라이언트 사이드 (`src/`):**
 - `src/app/` - Next.js App Router 페이지 및 API 라우트
 - `src/app/(platform)/` - 플랫폼 페이지를 위한 라우트 그룹 (로그인, 회원가입)
 - `src/app/admin/` - 중첩 라우트 그룹이 있는 관리자 페이지
+- `src/app/admin/(admin)/` - 관리자 메인 페이지 (대시보드, 게시글, 회원, 설정)
 - `src/app/api/auth/[...all]/` - Better Auth 캐치올 라우트 핸들러
 - `src/components/ui/` - Radix UI 기반 shadcn/ui 컴포넌트
+- `src/components/admin/` - 관리자 전용 컴포넌트 (사이드바, 헤더)
 - `src/components/tiptap/` - Tiptap 리치 텍스트 에디터 컴포넌트 및 아이콘
-- `src/hooks/` - 커스텀 React 훅 (Tiptap 관련, 반응형 유틸리티)
-- `src/lib/` - 클라이언트 사이드 유틸리티 (Tiptap 헬퍼, 인증)
+- `src/config/` - 애플리케이션 설정 파일 (관리자 메뉴 등)
+- `src/types/` - TypeScript 타입 정의 (type 키워드 사용)
+- `src/hooks/` - 커스텀 React 훅 (Tiptap 관련, 반응형 유틸리티, 인증 계약)
+- `src/lib/` - 클라이언트 사이드 유틸리티 (Tiptap 헬퍼, 인증, ts-rest 클라이언트)
 - `src/middleware.ts` - 디바이스 감지를 위한 Next.js 미들웨어 (RSC 요청, API 라우트, 정적 파일 제외)
 
 ### 주요 기술
@@ -101,6 +106,7 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - Pretendard 폰트 패밀리
 - 테마를 위한 CSS 커스텀 속성 (예: `--document-scroll-pt`)
 - Radix UI 프리미티브를 사용하는 shadcn/ui 컴포넌트
+- 커스텀 애니메이션 (Collapsible 슬라이드 다운/업)
 
 **에디터:**
 - 다양한 확장 기능을 가진 Tiptap (하이라이트, 이미지, 리스트, 타이포그래피, 텍스트 정렬 등)
@@ -122,7 +128,10 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - 사이트 메타데이터(이름, 설명, 파비콘)는 `getSiteSettings()`를 통해 데이터베이스에서 동적으로 로드됨
 - `server/service/`의 모든 데이터베이스 작업은 "server-only" import 가드 사용
 - Biome이 Next.js 및 React 도메인 규칙과 함께 린팅 및 포맷팅 처리
+  - `noUnusedImports` 규칙 활성화
+  - VSCode에서 자동으로 미사용 import 제거
 - 루트 레이아웃에 `force-dynamic` 설정으로 동적 렌더링 강제
+- React Query를 사용한 서버 데이터 프리페칭 및 Hydration
 
 ### 에러 처리
 
@@ -134,6 +143,32 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 **에러 페이지 차이점:**
 - `error.tsx`: 컴포넌트 레벨 에러를 캐치하며, 부모 레이아웃은 유지됨
 - `global-error.tsx`: 루트 `layout.tsx`의 에러를 캐치하며, 자체 `<html>`, `<body>` 태그 필요. 프로덕션 빌드에서만 제대로 동작함
+
+### 관리자 UI
+
+**컴포넌트 구조:**
+- `src/components/admin/admin-sidebar.tsx` - 메인 사이드바 컨테이너
+- `src/components/admin/admin-sidebar-header.tsx` - 사이드바 헤더 (앱 이름)
+- `src/components/admin/admin-sidebar-footer.tsx` - 사이드바 푸터 (사용자 정보, 로그아웃)
+- `src/components/admin/admin-sidebar-menu-item.tsx` - 메뉴 아이템 (Collapsible 서브메뉴 지원)
+- `src/components/admin/admin-header.tsx` - 페이지 헤더 (토글 버튼, 브레드크럼)
+
+**메뉴 설정:**
+- `src/config/admin-menu.ts` - 관리자 메뉴 구조 정의
+  - 각 그룹, 아이템, 서브아이템은 고유한 `id` 필드 보유
+  - 메뉴 아이템에는 title, href, icon 포함
+  - 서브메뉴는 Collapsible로 구현 (슬라이드 애니메이션)
+
+**타입 정의:**
+- `src/types/admin.ts` - AdminMenuGroup, AdminMenuItem, AdminMenuSubItem
+
+**주요 기능:**
+- shadcn/ui Sidebar 컴포넌트 활용
+- 반응형 디자인 (데스크톱: 아이콘 축소, 모바일: Sheet)
+- 키보드 단축키 (Cmd/Ctrl + B)
+- `useAuthContract` 훅으로 세션 정보 가져오기
+- Collapsible 메뉴 애니메이션 (화살표 회전, 슬라이드 다운/업)
+- 현재 페이지 활성화 표시
 
 ## 환경 변수
 
