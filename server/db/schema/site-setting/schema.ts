@@ -1,4 +1,5 @@
-import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text } from "drizzle-orm/pg-core";
+import { createdAt, updatedAt } from "@server/db/util/column";
 
 export const siteSettingEnum = pgEnum("enum_site_setting_name", [
   "site_name",
@@ -14,9 +15,6 @@ export type SiteSettingEnum = (typeof siteSettingEnum.enumValues)[number];
 export const siteSetting = pgTable("site_setting", {
   id: siteSettingEnum().primaryKey(),
   value: text("value").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
 });

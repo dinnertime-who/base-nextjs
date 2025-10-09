@@ -16,6 +16,11 @@ export const auth = betterAuth({
     provider: "pg",
     schema: { ...schema },
   }),
+  advanced: {
+    database: {
+      generateId: false,
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
@@ -33,7 +38,7 @@ export const auth = betterAuth({
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
     expiresIn: VERIFICATION_EXPIRES_IN,
-    sendVerificationEmail: async ({ user: emailUser, token, url }, request) => {
+    sendVerificationEmail: async ({ user: emailUser, url }, request) => {
       const { error } = await tryCatch(async () => {
         await sendVerificationEmail({ to: emailUser.email, url });
       });

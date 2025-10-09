@@ -1,16 +1,14 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, boolean, text } from "drizzle-orm/pg-core";
+import { createdAt, cuidPrimaryKey, updatedAt } from "@server/db/util/column";
 
 export const user = pgTable("user", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
   role: text("role"),
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
@@ -18,13 +16,11 @@ export const user = pgTable("user", {
 });
 
 export const session = pgTable("session", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
   userId: text("user_id")
@@ -35,7 +31,7 @@ export const session = pgTable("session", {
 });
 
 export const account = pgTable("account", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
   userId: text("user_id")
@@ -48,35 +44,30 @@ export const account = pgTable("account", {
   refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
   scope: text("scope"),
   password: text("password"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
 });
 
 export const verification = pgTable("verification", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
 });
 
 export const organization = pgTable("organization", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   logo: text("logo"),
-  createdAt: timestamp("created_at").notNull(),
+  createdAt: createdAt(),
   metadata: text("metadata"),
 });
 
 export const member = pgTable("member", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   organizationId: text("organization_id")
     .notNull()
     .references(() => organization.id, { onDelete: "cascade" }),
@@ -84,11 +75,11 @@ export const member = pgTable("member", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   role: text("role").default("member").notNull(),
-  createdAt: timestamp("created_at").notNull(),
+  createdAt: createdAt(),
 });
 
 export const invitation = pgTable("invitation", {
-  id: text("id").primaryKey(),
+  id: cuidPrimaryKey(),
   organizationId: text("organization_id")
     .notNull()
     .references(() => organization.id, { onDelete: "cascade" }),
@@ -99,11 +90,4 @@ export const invitation = pgTable("invitation", {
   inviterId: text("inviter_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-});
-
-export const jwks = pgTable("jwks", {
-  id: text("id").primaryKey(),
-  publicKey: text("public_key").notNull(),
-  privateKey: text("private_key").notNull(),
-  createdAt: timestamp("created_at").notNull(),
 });
