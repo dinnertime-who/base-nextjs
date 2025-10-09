@@ -13,14 +13,14 @@ const nextConfig: NextConfig = {
   // react strict mode 활성화
   reactStrictMode: true,
 
-  // 타입스크립트 빌드 오류 무시
+  // 타입스크립트 빌드 오류 체크
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
-  // eslint 빌드 오류 무시
+  // eslint 빌드 오류 체크
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 
   // Docker 배포를 위한 standalone 출력
@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: process.env.NEXT_PUBLIC_BASE_URL!,
       },
     ],
   },

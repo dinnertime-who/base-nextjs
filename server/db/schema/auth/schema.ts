@@ -1,34 +1,47 @@
-import { pgTable, timestamp, boolean, text } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, boolean, text, index } from "drizzle-orm/pg-core";
 import { createdAt, cuidPrimaryKey, updatedAt } from "@server/db/util/column";
 
-export const user = pgTable("user", {
-  id: cuidPrimaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-  role: text("role"),
-  banned: boolean("banned").default(false),
-  banReason: text("ban_reason"),
-  banExpires: timestamp("ban_expires"),
-});
+export const user = pgTable(
+  "user",
+  {
+    id: cuidPrimaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
+    image: text("image"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+    role: text("role"),
+    banned: boolean("banned").default(false),
+    banReason: text("ban_reason"),
+    banExpires: timestamp("ban_expires"),
+  },
+  (table) => ({
+    emailIdx: index("user_email_idx").on(table.email),
+  })
+);
 
-export const session = pgTable("session", {
-  id: cuidPrimaryKey(),
-  expiresAt: timestamp("expires_at").notNull(),
-  token: text("token").notNull().unique(),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  impersonatedBy: text("impersonated_by"),
-  activeOrganizationId: text("active_organization_id"),
-});
+export const session = pgTable(
+  "session",
+  {
+    id: cuidPrimaryKey(),
+    expiresAt: timestamp("expires_at").notNull(),
+    token: text("token").notNull().unique(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    impersonatedBy: text("impersonated_by"),
+    activeOrganizationId: text("active_organization_id"),
+  },
+  (table) => ({
+    userIdIdx: index("session_user_id_idx").on(table.userId),
+    tokenIdx: index("session_token_idx").on(table.token),
+  })
+);
 
 export const account = pgTable("account", {
   id: cuidPrimaryKey(),

@@ -40,7 +40,8 @@ export const auth = betterAuth({
         await sendResetPasswordEmail({ to: emailUser.email, url });
       });
       if (error) {
-        console.error(error);
+        // TODO: 메일 발송 에러 로깅 추가
+        throw new Error("메일 발송 도중 문제가 발생했습니다.");
       }
     },
   },
@@ -55,7 +56,9 @@ export const auth = betterAuth({
       });
 
       if (error) {
-        console.error(error);
+        await db.delete(user).where(eq(user.id, emailUser.id));
+        // TODO: 메일 발송 에러 로깅 추가
+        throw new Error("메일 발송 도중 문제가 발생했습니다.");
       }
 
       setTimeout(async () => {
