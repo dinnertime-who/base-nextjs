@@ -1,7 +1,6 @@
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
 import { user } from "@server/db/schema";
-import { userVerificationQueue } from "@server/queues/user-verification.queue";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
 import { tryCatch } from "@shared/try-catch";
 import * as bcrypt from "bcrypt-ts";
@@ -10,6 +9,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins";
 import { eq } from "drizzle-orm";
+import { addDeleteUnverifiedUser } from "../workers/queues/user.queue";
 import {
   sendResetPasswordEmail,
   sendVerificationEmail,
@@ -63,14 +63,10 @@ export const auth = betterAuth({
       }
 
       // BullMQ로 삭제 작업 예약 (정확히 VERIFICATION_EXPIRES_IN 후 실행)
-      await userVerificationQueue.add(
-        "delete-unverified-user",
-        { userId: emailUser.id },
-        {
-          delay: VERIFICATION_EXPIRES_IN * 1000,
-          jobId: `delete-unverified-${emailUser.id}`, // 중복 방지
-        },
-      );
+      await addDeleteUnverifiedUser({
+        userId: emailUser.id,
+        expiresIn: VERIFICATION_EXPIRES_IN,
+      });
     },
   },
   account: {

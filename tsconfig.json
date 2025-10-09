@@ -22,7 +22,8 @@
       "@/*": ["./src/*"],
       "@server/*": ["./server/*"],
       "@tiptap-editor/*": ["./src/components/tiptap/*"],
-      "@shared/*": ["./shared/*"]
+      "@shared/*": ["./shared/*"],
+      "@workers/*": ["./workers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

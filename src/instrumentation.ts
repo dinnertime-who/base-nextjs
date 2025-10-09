@@ -3,7 +3,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     // Worker 시작 (환경 변수로 비활성화 가능)
     if (process.env.DISABLE_WORKERS !== "true") {
-      const { startWorkers } = await import("@server/workers");
+      const { startWorkers } = await import("@workers/start");
       startWorkers();
       console.log("✓ Application instrumentation completed");
     } else {

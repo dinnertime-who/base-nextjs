@@ -56,8 +56,9 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 
 - `@/*` - `src/*`로 매핑
 - `@server/*` - `server/*`로 매핑 (서버 전용 코드)
+- `@workers/*` - `workers/*`로 매핑 (BullMQ 작업 큐)
 - `@tiptap-editor/*` - `src/components/tiptap/*`로 매핑
-- `@constants/*` - `src/constants/*`로 매핑
+- `@shared/*` - `shared/*`로 매핑 (공유 상수 및 유틸리티)
 
 ### 디렉토리 구조
 
@@ -68,6 +69,14 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - `server/service/` - 서버 사이드 비즈니스 로직 및 데이터 접근 계층
 - `server/prefetches/` - React Query prefetch 함수 (서버 컴포넌트용)
 - `server/lib/` - 서버 전용 유틸리티 함수
+
+**백그라운드 작업 (`workers/`):**
+- `workers/config.ts` - BullMQ 공통 설정 및 글로벌 캐싱
+- `workers/queues/` - Queue 인스턴스 및 Job 추가 헬퍼
+- `workers/workers/` - Worker 인스턴스 및 Job 라우팅
+- `workers/handlers/` - Job 비즈니스 로직 처리
+- `workers/jobs/` - Job 타입 및 이름 상수
+- `workers/start.ts` - Worker 시작 및 종료
 
 **클라이언트 사이드 (`src/`):**
 - `src/app/` - Next.js App Router 페이지 및 API 라우트
@@ -116,6 +125,90 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - 서버 상태를 위한 React Query (@tanstack/react-query)
 - 클라이언트 상태를 위한 Zustand
 - Zod 검증을 사용하는 React Hook Form
+
+**백그라운드 작업:**
+- BullMQ와 Redis를 사용한 비동기 작업 큐 시스템
+- `workers/` 디렉토리에 구조화된 아키텍처
+- 이메일 인증 만료 처리 등의 지연 작업 지원
+
+### BullMQ 아키텍처
+
+**디렉토리 구조:**
+- `workers/config.ts` - Redis 연결 및 Queue/Worker 공통 설정
+- `workers/queues/` - Queue 인스턴스 정의 및 Job 추가 헬퍼 함수
+- `workers/workers/` - Worker 인스턴스 정의 및 Job 라우팅
+- `workers/handlers/` - 실제 비즈니스 로직 처리 (도메인별 분리)
+- `workers/jobs/` - Job 타입 및 이름 상수 정의
+- `workers/start.ts` - Worker 시작 및 Graceful Shutdown 처리
+
+**주요 개념:**
+
+1. **글로벌 캐싱 시스템**
+   ```typescript
+   // workers/config.ts
+   export const getQueue = (name: string) => { /* 중복 방지 */ };
+   export const getWorker = (name: string, factory: () => Worker) => { /* 중복 방지 */ };
+   ```
+   - Queue/Worker 인스턴스를 글로벌 Map에 캐싱하여 중복 생성 방지
+   - Next.js HMR 환경에서도 안전하게 동작
+
+2. **타입 안전한 Job 정의**
+   ```typescript
+   // workers/jobs/user-job.type.ts
+   export const USER_JOB_NAMES = {
+     DELETE_UNVERIFIED_USER: "delete-unverified-user",
+   } as const;
+
+   export type DeleteUnverifiedUserJobData = {
+     userId: string;
+     expiresIn: number;
+   };
+   ```
+
+3. **헬퍼 함수를 통한 Job 추가**
+   ```typescript
+   // workers/queues/user.queue.ts
+   export const addDeleteUnverifiedUser = (data: DeleteUnverifiedUserJobData) =>
+     userQueue.add(USER_JOB_NAMES.DELETE_UNVERIFIED_USER, data, {
+       delay: data.expiresIn * 1000,
+       jobId: `${USER_JOB_NAMES.DELETE_UNVERIFIED_USER}-${data.userId}`,
+     });
+   ```
+
+4. **Worker에서 Job 라우팅**
+   ```typescript
+   // workers/workers/user.worker.ts
+   switch (name) {
+     case USER_JOB_NAMES.DELETE_UNVERIFIED_USER:
+       return processDeleteUnverifiedUser(data as DeleteUnverifiedUserJobData);
+     // 새로운 Job은 여기에 추가
+   }
+   ```
+
+5. **Handler에서 비즈니스 로직 처리**
+   ```typescript
+   // workers/handlers/user/delete-unverified-user.ts
+   export const processDeleteUnverifiedUser = async (data: DeleteUnverifiedUserJobData) => {
+     // 실제 DB 작업 등 비즈니스 로직
+   };
+   ```
+
+**새로운 Job 추가 방법:**
+1. `workers/jobs/[domain]-job.type.ts` - Job 이름 상수 및 데이터 타입 정의
+2. `workers/queues/[domain].queue.ts` - Queue 가져오기 및 헬퍼 함수 추가
+3. `workers/handlers/[domain]/[job-name].ts` - 비즈니스 로직 구현
+4. `workers/workers/[domain].worker.ts` - Worker의 switch문에 케이스 추가
+5. `workers/start.ts` - 필요시 새 Worker 시작 함수 호출
+
+**설정 및 모니터링:**
+- `defaultJobOptions`: 3번 재시도, exponential backoff, 자동 삭제 정책
+- `defaultWorkerOptions`: 동시성 5개, Rate limiting (1초에 10개)
+- Worker 이벤트 핸들러: `completed`, `failed`, `error`, `stalled`
+- Graceful Shutdown: SIGTERM/SIGINT 핸들러로 안전한 종료
+
+**실행:**
+- `src/instrumentation.ts`에서 `startWorkers()` 자동 호출
+- `DISABLE_WORKERS=true` 환경 변수로 비활성화 가능
 
 ### 중요 사항
 
@@ -183,3 +276,8 @@ Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CS
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` - Google OAuth 자격증명
 - `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` - Naver OAuth 자격증명
 - `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET` - Kakao OAuth 자격증명
+
+**BullMQ 백그라운드 작업 (선택):**
+- `REDIS_HOST` - Redis 서버 호스트 (기본값: localhost)
+- `REDIS_PORT` - Redis 서버 포트 (기본값: 6379)
+- `DISABLE_WORKERS` - Worker 비활성화 (true로 설정시 비활성화)
