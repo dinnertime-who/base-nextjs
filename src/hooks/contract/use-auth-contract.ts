@@ -1,5 +1,4 @@
-"use client";
-
+import { SESSION_QUERY_KEY } from "@shared/constants/auth";
 import type { SetUpAdminUserSchemaType } from "@shared/schema/set-up-admin-user.schema";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth";
@@ -7,7 +6,7 @@ import { authContractClient } from "@/lib/contract-client";
 
 export const useAuthContract = () => {
   const getSession = useQuery({
-    queryKey: ["session"],
+    queryKey: [SESSION_QUERY_KEY],
     queryFn: async () => {
       const res = await authClient.getSession();
       return res.data;

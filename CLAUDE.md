@@ -10,6 +10,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Next.js 15 애플리케이션으로 Turbopack, React 19, TypeScript, Tailwind CSS 4를 사용합니다. 인증은 Better Auth, 데이터베이스는 Drizzle ORM과 PostgreSQL, 린팅/포맷팅은 Biome, 리치 텍스트 에디터는 Tiptap을 사용합니다.
 
+## 코딩 컨벤션
+
+**TypeScript 타입 정의:**
+- 모든 타입 정의는 **`type` 키워드**만 사용하며, `interface`는 사용하지 않습니다.
+- 예시:
+  ```typescript
+  // ✅ 올바른 방법
+  type User = {
+    name: string;
+    email: string;
+  };
+
+  // ❌ 사용하지 않음
+  interface User {
+    name: string;
+    email: string;
+  }
+  ```
+
 ## 명령어
 
 **개발:**

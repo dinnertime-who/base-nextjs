@@ -1,3 +1,3 @@
 export default function AdminPage() {
-  return <div>AdminPage</div>;
+  return <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"></div>;
 }
