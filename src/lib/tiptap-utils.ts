@@ -240,10 +240,10 @@ export function findNodePosition(props: {
   }
 
   // If we have a valid position, use findNodeAtPosition
-  if (hasValidPos) {
-    const nodeAtPos = findNodeAtPosition(editor, nodePos!);
+  if (hasValidPos && nodePos) {
+    const nodeAtPos = findNodeAtPosition(editor, nodePos);
     if (nodeAtPos) {
-      return { pos: nodePos!, node: nodeAtPos };
+      return { pos: nodePos, node: nodeAtPos };
     }
   }
 
@@ -332,6 +332,7 @@ type ProtocolConfig = Array<ProtocolOptions | string>;
 
 const ATTR_WHITESPACE =
   // eslint-disable-next-line no-control-regex
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: pass
   /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g;
 
 export function isAllowedUri(
@@ -369,7 +370,7 @@ export function isAllowedUri(
         // eslint-disable-next-line no-useless-escape
         `^(?:(?:${allowedProtocols.join(
           "|",
-        )}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`,
+        )}):|[^a-z]|[a-z0-9+.-]+(?:[^a-z+.-:]|$))`,
         "i",
       ),
     )

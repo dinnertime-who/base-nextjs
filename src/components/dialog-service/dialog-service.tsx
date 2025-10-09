@@ -3,40 +3,40 @@
 import { useDialogServiceStore } from "@/hooks/use-dialog-service";
 import {
   AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "../ui/alert-dialog";
 
 export const DialogService = () => {
   const alertTitle = useDialogServiceStore((state) => state.alert.title);
   const alertDescription = useDialogServiceStore(
-    (state) => state.alert.message
+    (state) => state.alert.message,
   );
   const alertButtonText = useDialogServiceStore(
-    (state) => state.alert.buttonText
+    (state) => state.alert.buttonText,
   );
   const alertIsOpened = useDialogServiceStore((state) => state.alert.isOpened);
   const alertOnClickAction = useDialogServiceStore(
-    (state) => state.alert.onClickAction
+    (state) => state.alert.onClickAction,
   );
 
   const confirmTitle = useDialogServiceStore((state) => state.confirm.title);
   const confirmDescription = useDialogServiceStore(
-    (state) => state.confirm.message
+    (state) => state.confirm.message,
   );
   const confirmButtonText = useDialogServiceStore(
-    (state) => state.confirm.buttonText
+    (state) => state.confirm.buttonText,
   );
   const confirmIsOpened = useDialogServiceStore(
-    (state) => state.confirm.isOpened
+    (state) => state.confirm.isOpened,
   );
   const confirmOnClickAction = useDialogServiceStore(
-    (state) => state.confirm.onClickAction
+    (state) => state.confirm.onClickAction,
   );
 
   return (

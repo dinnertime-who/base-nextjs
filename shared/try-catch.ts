@@ -39,7 +39,7 @@ type Result<T, E = Error> = Success<T> | Failure<E>;
  * }
  */
 export async function tryCatch<T, E = Error>(
-  promiseFn: () => Promise<T>
+  promiseFn: () => Promise<T>,
 ): Promise<Result<T, E>> {
   try {
     const data = await promiseFn();
@@ -89,7 +89,7 @@ export function tryCatchSync<T, E = Error>(execution: () => T): Result<T, E> {
  */
 export async function tryCatchWithDefault<T>(
   promiseFn: () => Promise<T>,
-  defaultValue: T
+  defaultValue: T,
 ): Promise<T> {
   try {
     return await promiseFn();

@@ -1,5 +1,5 @@
-import { pgEnum, pgTable, text } from "drizzle-orm/pg-core";
 import { createdAt, updatedAt } from "@server/db/util/column";
+import { pgEnum, pgTable, text } from "drizzle-orm/pg-core";
 
 export const siteSettingEnum = pgEnum("enum_site_setting_name", [
   "site_name",

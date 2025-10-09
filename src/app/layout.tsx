@@ -1,11 +1,13 @@
 import "./globals.css";
+import { getSiteSettings } from "@server/service/site-setting/site-setting.service";
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "@/components/react-query/react-query-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { DialogService } from "@/components/dialog-service/dialog-service";
+import { ReactQueryProvider } from "@/components/react-query/react-query-provider";
 import { pretendard } from "@/fonts";
 import { cn } from "@/lib/utils";
-import { getSiteSettings } from "@server/service/site-setting/site-setting.service";
-import { DialogService } from "@/components/dialog-service/dialog-service";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const siteSettings = await getSiteSettings();

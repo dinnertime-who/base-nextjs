@@ -1,19 +1,19 @@
 "use client";
 
-import * as React from "react";
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
-
-// --- Tiptap Core Extensions ---
-import { StarterKit } from "@tiptap/starter-kit";
+import { Highlight } from "@tiptap/extension-highlight";
 import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
-import { TextAlign } from "@tiptap/extension-text-align";
-import { Typography } from "@tiptap/extension-typography";
-import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { Typography } from "@tiptap/extension-typography";
 import { Selection } from "@tiptap/extensions";
-
+import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
+// --- Tiptap Core Extensions ---
+import { StarterKit } from "@tiptap/starter-kit";
+import { HorizontalRule } from "@tiptap-editor/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
+// --- Tiptap Node ---
+import { ImageUploadNode } from "@tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension";
 // --- UI Primitives ---
 import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Spacer } from "@tiptap-editor/tiptap-ui-primitive/spacer";
@@ -22,10 +22,7 @@ import {
   ToolbarGroup,
   ToolbarSeparator,
 } from "@tiptap-editor/tiptap-ui-primitive/toolbar";
-
-// --- Tiptap Node ---
-import { ImageUploadNode } from "@tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension";
-import { HorizontalRule } from "@tiptap-editor/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
+import * as React from "react";
 import "@tiptap-editor/tiptap-node/blockquote-node/blockquote-node.scss";
 import "@tiptap-editor/tiptap-node/code-block-node/code-block-node.scss";
 import "@tiptap-editor/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss";
@@ -34,43 +31,38 @@ import "@tiptap-editor/tiptap-node/image-node/image-node.scss";
 import "@tiptap-editor/tiptap-node/heading-node/heading-node.scss";
 import "@tiptap-editor/tiptap-node/paragraph-node/paragraph-node.scss";
 
-// --- Tiptap UI ---
-import { HeadingDropdownMenu } from "@tiptap-editor/tiptap-ui/heading-dropdown-menu";
-import { ImageUploadButton } from "@tiptap-editor/tiptap-ui/image-upload-button";
-import { ListDropdownMenu } from "@tiptap-editor/tiptap-ui/list-dropdown-menu";
-import { BlockquoteButton } from "@tiptap-editor/tiptap-ui/blockquote-button";
-import { CodeBlockButton } from "@tiptap-editor/tiptap-ui/code-block-button";
-import {
-  ColorHighlightPopover,
-  ColorHighlightPopoverContent,
-  ColorHighlightPopoverButton,
-} from "@tiptap-editor/tiptap-ui/color-highlight-popover";
-import {
-  LinkPopover,
-  LinkContent,
-  LinkButton,
-} from "@tiptap-editor/tiptap-ui/link-popover";
-import { MarkButton } from "@tiptap-editor/tiptap-ui/mark-button";
-import { TextAlignButton } from "@tiptap-editor/tiptap-ui/text-align-button";
-import { UndoRedoButton } from "@tiptap-editor/tiptap-ui/undo-redo-button";
-
+import content from "@tiptap-editor/simple/data/content.json";
+// --- Components ---
+import { ThemeToggle } from "@tiptap-editor/simple/theme-toggle";
 // --- Icons ---
 import { ArrowLeftIcon } from "@tiptap-editor/tiptap-icons/arrow-left-icon";
 import { HighlighterIcon } from "@tiptap-editor/tiptap-icons/highlighter-icon";
 import { LinkIcon } from "@tiptap-editor/tiptap-icons/link-icon";
-
+import { BlockquoteButton } from "@tiptap-editor/tiptap-ui/blockquote-button";
+import { CodeBlockButton } from "@tiptap-editor/tiptap-ui/code-block-button";
+import {
+  ColorHighlightPopover,
+  ColorHighlightPopoverButton,
+  ColorHighlightPopoverContent,
+} from "@tiptap-editor/tiptap-ui/color-highlight-popover";
+// --- Tiptap UI ---
+import { HeadingDropdownMenu } from "@tiptap-editor/tiptap-ui/heading-dropdown-menu";
+import { ImageUploadButton } from "@tiptap-editor/tiptap-ui/image-upload-button";
+import {
+  LinkButton,
+  LinkContent,
+  LinkPopover,
+} from "@tiptap-editor/tiptap-ui/link-popover";
+import { ListDropdownMenu } from "@tiptap-editor/tiptap-ui/list-dropdown-menu";
+import { MarkButton } from "@tiptap-editor/tiptap-ui/mark-button";
+import { TextAlignButton } from "@tiptap-editor/tiptap-ui/text-align-button";
+import { UndoRedoButton } from "@tiptap-editor/tiptap-ui/undo-redo-button";
+import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 // --- Hooks ---
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
-
-// --- Components ---
-import { ThemeToggle } from "@tiptap-editor/simple/theme-toggle";
-
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
-
-import content from "@tiptap-editor/simple/data/content.json";
 
 const MainToolbarContent = ({
   onHighlighterClick,

@@ -15,9 +15,8 @@ export const SubmitButton = ({
 }: Props) => {
   const form = useFormContext();
   return (
-    <form.Subscribe
-      selector={(state) => [state.canSubmit, state.isSubmitting]}
-      children={([canSubmit, isSubmitting]) => (
+    <form.Subscribe selector={(state) => [state.isSubmitting]}>
+      {([isSubmitting]) => (
         <Button
           className={cn("w-full cursor-pointer", className)}
           type="submit"
@@ -27,6 +26,6 @@ export const SubmitButton = ({
           {isSubmitting ? submittingNode : children}
         </Button>
       )}
-    />
+    </form.Subscribe>
   );
 };

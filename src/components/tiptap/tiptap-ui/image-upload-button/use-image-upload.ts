@@ -1,18 +1,15 @@
 "use client";
 
-import * as React from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { type Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-// --- Lib ---
-import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils";
-
+import type { Editor } from "@tiptap/react";
 // --- Icons ---
 import { ImagePlusIcon } from "@tiptap-editor/tiptap-icons/image-plus-icon";
+import * as React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useIsMobile } from "@/hooks/use-mobile";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils";
 
 export const IMAGE_UPLOAD_SHORTCUT_KEY = "mod+shift+i";
 

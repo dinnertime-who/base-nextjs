@@ -1,24 +1,20 @@
 "use client";
 
-import * as React from "react";
-
-// --- Lib ---
-import { parseShortcutKeys } from "@/lib/tiptap-utils";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
 // --- Tiptap UI ---
 import type { UseColorHighlightConfig } from "@tiptap-editor/tiptap-ui/color-highlight-button";
 import {
   COLOR_HIGHLIGHT_SHORTCUT_KEY,
   useColorHighlight,
 } from "@tiptap-editor/tiptap-ui/color-highlight-button";
-
+import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
 // --- UI Primitives ---
 import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
-import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { parseShortcutKeys } from "@/lib/tiptap-utils";
 
 // --- Styles ---
 import "@tiptap-editor/tiptap-ui/color-highlight-button/color-highlight-button.scss";
@@ -112,7 +108,6 @@ export const ColorHighlightButton = React.forwardRef<
         type="button"
         data-style="ghost"
         data-active-state={isActive ? "on" : "off"}
-        role="button"
         tabIndex={-1}
         disabled={!canColorHighlight}
         data-disabled={!canColorHighlight}

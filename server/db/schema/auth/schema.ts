@@ -1,5 +1,5 @@
-import { pgTable, timestamp, boolean, text, index } from "drizzle-orm/pg-core";
 import { createdAt, cuidPrimaryKey, updatedAt } from "@server/db/util/column";
+import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const user = pgTable(
   "user",
@@ -18,7 +18,7 @@ export const user = pgTable(
   },
   (table) => ({
     emailIdx: index("user_email_idx").on(table.email),
-  })
+  }),
 );
 
 export const session = pgTable(
@@ -40,7 +40,7 @@ export const session = pgTable(
   (table) => ({
     userIdIdx: index("session_user_id_idx").on(table.userId),
     tokenIdx: index("session_token_idx").on(table.token),
-  })
+  }),
 );
 
 export const account = pgTable("account", {

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "../ui/button";
 import { useAuthContract } from "@/hooks/contract/use-auth-contract";
+import { Button } from "../ui/button";
 
 export const GoogleSignOn = () => {
   const { signInSocial } = useAuthContract();

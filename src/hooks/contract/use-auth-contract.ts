@@ -1,9 +1,9 @@
 "use client";
 
+import type { SetUpAdminUserSchemaType } from "@shared/schema/set-up-admin-user.schema";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth";
 import { authContractClient } from "@/lib/contract-client";
-import { SetUpAdminUserSchemaType } from "@shared/schema/set-up-admin-user.schema";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useAuthContract = () => {
   const getSession = useQuery({

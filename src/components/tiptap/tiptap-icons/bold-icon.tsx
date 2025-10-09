@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: pass */
 import * as React from "react";
 
 export const BoldIcon = React.memo(

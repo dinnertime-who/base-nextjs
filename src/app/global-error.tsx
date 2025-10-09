@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: pass */
 "use client";
 
 import { useEffect } from "react";
@@ -136,7 +137,11 @@ export default function GlobalError({
               <p className="error-code">오류 코드: {error.digest}</p>
             )}
             <div className="button-group">
-              <button onClick={() => reset()} className="btn btn-primary">
+              <button
+                onClick={() => reset()}
+                className="btn btn-primary"
+                type="button"
+              >
                 다시 시도
               </button>
               <a href="/" className="btn btn-outline">

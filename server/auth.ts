@@ -1,18 +1,18 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
-import { admin, createAuthMiddleware, organization } from "better-auth/plugins";
-import { nextCookies } from "better-auth/next-js";
-import * as bcrypt from "bcrypt-ts";
 import { user } from "@server/db/schema";
-import { and, eq } from "drizzle-orm";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
+import { tryCatch } from "@shared/try-catch";
+import * as bcrypt from "bcrypt-ts";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
+import { admin, organization } from "better-auth/plugins";
+import { eq } from "drizzle-orm";
 import {
   sendResetPasswordEmail,
   sendVerificationEmail,
 } from "./service/email/email.service";
-import { tryCatch } from "@shared/try-catch";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -35,7 +35,7 @@ export const auth = betterAuth({
         return bcrypt.compare(password, hash);
       },
     },
-    sendResetPassword: async ({ user: emailUser, url }, request) => {
+    sendResetPassword: async ({ user: emailUser, url }, _request) => {
       const { error } = await tryCatch(async () => {
         await sendResetPasswordEmail({ to: emailUser.email, url });
       });
@@ -50,7 +50,7 @@ export const auth = betterAuth({
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
     expiresIn: VERIFICATION_EXPIRES_IN,
-    sendVerificationEmail: async ({ user: emailUser, url }, request) => {
+    sendVerificationEmail: async ({ user: emailUser, url }, _request) => {
       const { error } = await tryCatch(async () => {
         await sendVerificationEmail({ to: emailUser.email, url });
       });
@@ -81,16 +81,16 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     },
     naver: {
-      clientId: process.env.NAVER_CLIENT_ID!,
-      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      clientId: process.env.NAVER_CLIENT_ID ?? "",
+      clientSecret: process.env.NAVER_CLIENT_SECRET ?? "",
     },
     kakao: {
-      clientId: process.env.KAKAO_CLIENT_ID!,
-      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      clientId: process.env.KAKAO_CLIENT_ID ?? "",
+      clientSecret: process.env.KAKAO_CLIENT_SECRET ?? "",
     },
   },
   user: {

@@ -1,24 +1,20 @@
 "use client";
 
-import * as React from "react";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
-// --- Lib ---
-import { parseShortcutKeys } from "@/lib/tiptap-utils";
-
 // --- Tiptap UI ---
 import type { UseCodeBlockConfig } from "@tiptap-editor/tiptap-ui/code-block-button";
 import {
   CODE_BLOCK_SHORTCUT_KEY,
   useCodeBlock,
 } from "@tiptap-editor/tiptap-ui/code-block-button";
-
+import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
 // --- UI Primitives ---
 import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
-import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { parseShortcutKeys } from "@/lib/tiptap-utils";
 
 export interface CodeBlockButtonProps
   extends Omit<ButtonProps, "type">,
@@ -97,7 +93,6 @@ export const CodeBlockButton = React.forwardRef<
         type="button"
         data-style="ghost"
         data-active-state={isActive ? "on" : "off"}
-        role="button"
         disabled={!canToggle}
         data-disabled={!canToggle}
         tabIndex={-1}

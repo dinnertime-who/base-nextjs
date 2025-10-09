@@ -1,5 +1,5 @@
-import { text, timestamp } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
+import { text, timestamp } from "drizzle-orm/pg-core";
 
 export const cuidPrimaryKey = (columnName: string = "id") => {
   return text(columnName)

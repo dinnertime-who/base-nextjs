@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { Separator } from "@tiptap-editor/tiptap-ui-primitive/separator";
+import * as React from "react";
 import "@tiptap-editor/tiptap-ui-primitive/toolbar/toolbar.scss";
-import { cn } from "@/lib/utils";
-import { useMenuNavigation } from "@/hooks/use-menu-navigation";
 import { useComposedRef } from "@/hooks/use-composed-ref";
+import { useMenuNavigation } from "@/hooks/use-menu-navigation";
+import { cn } from "@/lib/utils";
 
 type BaseProps = React.HTMLAttributes<HTMLDivElement>;
 

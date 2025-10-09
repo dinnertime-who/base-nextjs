@@ -1,10 +1,9 @@
+import { auth } from "@server/auth";
 import { db } from "@server/db";
 import { user } from "@server/db/schema";
+import type { SetUpAdminUserSchemaType } from "@shared/schema/set-up-admin-user.schema";
 import { count, eq } from "drizzle-orm";
-import * as bcrypt from "bcrypt-ts";
-import { auth } from "@server/auth";
 import { headers } from "next/headers";
-import { SetUpAdminUserSchemaType } from "@shared/schema/set-up-admin-user.schema";
 
 export async function getHasSetup() {
   const result = await db

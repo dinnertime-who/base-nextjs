@@ -1,15 +1,15 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { useFieldContext } from "../app-form";
+import { Eye, EyeOff } from "lucide-react";
 import { useId, useState } from "react";
-import { cn } from "@/lib/utils";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Eye, EyeOff } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { useFieldContext } from "../app-form";
 
 type Props = Omit<
   React.ComponentProps<"input">,
@@ -32,7 +32,7 @@ export const PasswordField = ({ className, ...props }: Props) => {
     <div
       className={cn(
         "group grid w-full text-start gap-2 data-[invalid=true]:text-destructive",
-        className
+        className,
       )}
       data-invalid={isInvalid}
     >

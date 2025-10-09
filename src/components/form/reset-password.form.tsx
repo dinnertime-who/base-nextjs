@@ -1,13 +1,12 @@
 "use client";
 
-import { useAppForm } from "./core/app-form";
-import { cn } from "@/lib/utils";
-import { RequestResetPasswordSchema } from "@shared/schema/request-reset-password.schema";
-import { useDialogService } from "@/hooks/use-dialog-service";
-import { useAuthContract } from "@/hooks/contract/use-auth-contract";
-import { tryCatch } from "@shared/try-catch";
 import { ResetPasswordSchema } from "@shared/schema/reset-password.schema";
+import { tryCatch } from "@shared/try-catch";
 import { useRouter } from "next/navigation";
+import { useAuthContract } from "@/hooks/contract/use-auth-contract";
+import { useDialogService } from "@/hooks/use-dialog-service";
+import { cn } from "@/lib/utils";
+import { useAppForm } from "./core/app-form";
 
 export const ResetPasswordForm = ({
   className,
@@ -38,7 +37,7 @@ export const ResetPasswordForm = ({
       }
 
       await dialogService.alert(
-        "비밀번호 재설정이 완료되었습니다. 다시 로그인해주세요."
+        "비밀번호 재설정이 완료되었습니다. 다시 로그인해주세요.",
       );
 
       router.push("/sign-in");
@@ -56,12 +55,11 @@ export const ResetPasswordForm = ({
     >
       <form.AppForm>
         <form.Fieldset>
-          <form.AppField
-            name="newPassword"
-            children={(field) => (
+          <form.AppField name="newPassword">
+            {(field) => (
               <field.PasswordField placeholder="새로운 비밀번호를 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
         </form.Fieldset>
 
         <form.SubmitButton>비밀번호 재설정</form.SubmitButton>

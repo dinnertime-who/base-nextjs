@@ -1,5 +1,5 @@
 // src/emails/templates/components/EmailLayout.tsx
-import { Html, Head, Body, Container, Section } from "@react-email/components";
+import { Body, Container, Head, Html, Section } from "@react-email/components";
 
 type EmailLayoutProps = {
   children: React.ReactNode;

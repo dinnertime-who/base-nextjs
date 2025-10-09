@@ -1,28 +1,24 @@
 "use client";
 
-import * as React from "react";
-
 // --- Icons ---
 import { ChevronDownIcon } from "@tiptap-editor/tiptap-icons/chevron-down-icon";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
 // --- Tiptap UI ---
 import { HeadingButton } from "@tiptap-editor/tiptap-ui/heading-button";
 import type { UseHeadingDropdownMenuConfig } from "@tiptap-editor/tiptap-ui/heading-dropdown-menu";
 import { useHeadingDropdownMenu } from "@tiptap-editor/tiptap-ui/heading-dropdown-menu";
-
 // --- UI Primitives ---
 import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Button, ButtonGroup } from "@tiptap-editor/tiptap-ui-primitive/button";
+import { Card, CardBody } from "@tiptap-editor/tiptap-ui-primitive/card";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@tiptap-editor/tiptap-ui-primitive/dropdown-menu";
-import { Card, CardBody } from "@tiptap-editor/tiptap-ui-primitive/card";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 
 export interface HeadingDropdownMenuProps
   extends Omit<ButtonProps, "type">,
@@ -86,7 +82,6 @@ export const HeadingDropdownMenu = React.forwardRef<
             type="button"
             data-style="ghost"
             data-active-state={isActive ? "on" : "off"}
-            role="button"
             tabIndex={-1}
             disabled={!canToggle}
             data-disabled={!canToggle}

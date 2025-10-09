@@ -1,10 +1,10 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { useFieldContext } from "../app-form";
 import { useId } from "react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useFieldContext } from "../app-form";
 
 type Props = Omit<
   React.ComponentProps<"input">,
@@ -26,7 +26,7 @@ export const NumberField = ({ className, ...props }: Props) => {
     <div
       className={cn(
         "group grid w-full gap-2 data-[invalid=true]:text-destructive",
-        className
+        className,
       )}
       data-invalid={isInvalid}
     >

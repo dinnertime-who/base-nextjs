@@ -14,9 +14,5 @@ export default async function AdminLayout({
     return redirect("/admin/sign-in");
   }
 
-  return (
-    <>
-      <main>{children}</main>
-    </>
-  );
+  return <main>{children}</main>;
 }

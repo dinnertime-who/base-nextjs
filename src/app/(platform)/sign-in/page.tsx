@@ -1,10 +1,8 @@
 import { SignInForm } from "@/components/form/sign-in.form";
 import { GoogleSignOn } from "@/components/social-sign-on/google-sign-on";
-import { NaverSignOn } from "@/components/social-sign-on/naver-sign-on";
 import { KakaoSignOn } from "@/components/social-sign-on/kakao-sign-on";
+import { NaverSignOn } from "@/components/social-sign-on/naver-sign-on";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@server/auth";
-import { headers } from "next/headers";
 
 export default async function SignInPage() {
   return (

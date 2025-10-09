@@ -1,15 +1,15 @@
 "use client";
 
 import { SignInSchema } from "@shared/schema/sign-in.schema";
-import { useAppForm } from "./core/app-form";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { useAuthContract } from "@/hooks/contract/use-auth-contract";
-import Link from "next/link";
-import { buttonVariants } from "../ui/button";
 import { tryCatch } from "@shared/try-catch";
-import { useDialogService } from "@/hooks/use-dialog-service";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useAuthContract } from "@/hooks/contract/use-auth-contract";
+import { useDialogService } from "@/hooks/use-dialog-service";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/button";
+import { useAppForm } from "./core/app-form";
 
 type FormMeta = {
   signInType: "admin" | "platform";
@@ -37,7 +37,7 @@ export const SignInForm = ({
     },
     onSubmitMeta: defaultMeta,
     onSubmit: async ({ value, meta }) => {
-      const { data, error } = await tryCatch(async () => {
+      const { error } = await tryCatch(async () => {
         return await signInEmail.mutateAsync({
           email: value.email,
           password: value.password,
@@ -61,7 +61,7 @@ export const SignInForm = ({
     if (getSession.data) {
       signOut.mutate();
     }
-  }, [getSession.data]);
+  }, [getSession.data, signOut.mutate]);
 
   return (
     <form
@@ -74,19 +74,17 @@ export const SignInForm = ({
     >
       <form.AppForm>
         <form.Fieldset>
-          <form.AppField
-            name="email"
-            children={(field) => (
+          <form.AppField name="email">
+            {(field) => (
               <field.TextField placeholder="이메일을 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
 
-          <form.AppField
-            name="password"
-            children={(field) => (
+          <form.AppField name="password">
+            {(field) => (
               <field.PasswordField placeholder="비밀번호를 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
         </form.Fieldset>
 
         <form.SubmitButton>로그인</form.SubmitButton>

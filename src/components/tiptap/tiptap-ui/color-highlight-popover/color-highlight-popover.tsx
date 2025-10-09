@@ -1,32 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { type Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useMenuNavigation } from "@/hooks/use-menu-navigation";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
+import type { Editor } from "@tiptap/react";
 // --- Icons ---
 import { BanIcon } from "@tiptap-editor/tiptap-icons/ban-icon";
 import { HighlighterIcon } from "@tiptap-editor/tiptap-icons/highlighter-icon";
-
-// --- UI Primitives ---
-import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
-import { Button, ButtonGroup } from "@tiptap-editor/tiptap-ui-primitive/button";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@tiptap-editor/tiptap-ui-primitive/popover";
-import { Separator } from "@tiptap-editor/tiptap-ui-primitive/separator";
-import {
-  Card,
-  CardBody,
-  CardItemGroup,
-} from "@tiptap-editor/tiptap-ui-primitive/card";
-
 // --- Tiptap UI ---
 import type {
   HighlightColor,
@@ -37,6 +14,25 @@ import {
   pickHighlightColorsByValue,
   useColorHighlight,
 } from "@tiptap-editor/tiptap-ui/color-highlight-button";
+// --- UI Primitives ---
+import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
+import { Button, ButtonGroup } from "@tiptap-editor/tiptap-ui-primitive/button";
+import {
+  Card,
+  CardBody,
+  CardItemGroup,
+} from "@tiptap-editor/tiptap-ui-primitive/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@tiptap-editor/tiptap-ui-primitive/popover";
+import { Separator } from "@tiptap-editor/tiptap-ui-primitive/separator";
+import * as React from "react";
+// --- Hooks ---
+import { useMenuNavigation } from "@/hooks/use-menu-navigation";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 
 export interface ColorHighlightPopoverContentProps {
   /**
@@ -72,7 +68,6 @@ export const ColorHighlightPopoverButton = React.forwardRef<
     className={className}
     data-style="ghost"
     data-appearance="default"
-    role="button"
     tabIndex={-1}
     aria-label="Highlight text"
     tooltip="Highlight"

@@ -2,7 +2,7 @@ import { RequestResetPasswordForm } from "@/components/form/request-reset-passwo
 import { ResetPasswordForm } from "@/components/form/reset-password.form";
 
 export default async function ResetPasswordPage(
-  props: PageProps<"/reset-password">
+  props: PageProps<"/reset-password">,
 ) {
   const searchParams = await props.searchParams;
   const { token, error } = searchParams;

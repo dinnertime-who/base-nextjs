@@ -1,7 +1,7 @@
 // src/emails/templates/ResetPasswordEmail.tsx
-import { Heading, Text, Hr } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout";
+import { Heading, Hr, Text } from "@react-email/components";
 import { EmailButton } from "../components/email-button";
+import { EmailLayout } from "../components/email-layout";
 
 type ResetPasswordEmailProps = {
   resetUrl: string;
@@ -38,20 +38,6 @@ const text = {
   color: "#333",
   fontSize: "16px",
   lineHeight: "26px",
-};
-
-const codeStyle = {
-  display: "inline-block",
-  padding: "16px 4.5%",
-  width: "90.5%",
-  backgroundColor: "#f4f4f4",
-  borderRadius: "5px",
-  border: "1px solid #eee",
-  color: "#333",
-  fontSize: "24px",
-  fontWeight: "bold",
-  textAlign: "center" as const,
-  letterSpacing: "4px",
 };
 
 const hr = {

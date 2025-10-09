@@ -1,20 +1,16 @@
 "use client";
 
-import * as React from "react";
-import type { ChainedCommands } from "@tiptap/react";
-import { type Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
-// --- Lib ---
-import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils";
-
+import type { ChainedCommands, Editor } from "@tiptap/react";
 // --- Icons ---
 import { AlignCenterIcon } from "@tiptap-editor/tiptap-icons/align-center-icon";
 import { AlignJustifyIcon } from "@tiptap-editor/tiptap-icons/align-justify-icon";
 import { AlignLeftIcon } from "@tiptap-editor/tiptap-icons/align-left-icon";
 import { AlignRightIcon } from "@tiptap-editor/tiptap-icons/align-right-icon";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils";
 
 export type TextAlign = "left" | "center" | "right" | "justify";
 

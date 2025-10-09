@@ -1,6 +1,5 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: pass */
 "use client";
-
-import * as React from "react";
 
 // --- Tiptap UI Primitive ---
 import {
@@ -8,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@tiptap-editor/tiptap-ui-primitive/tooltip";
+import * as React from "react";
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils";

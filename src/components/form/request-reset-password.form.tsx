@@ -1,11 +1,11 @@
 "use client";
 
-import { useAppForm } from "./core/app-form";
-import { cn } from "@/lib/utils";
 import { RequestResetPasswordSchema } from "@shared/schema/request-reset-password.schema";
-import { useDialogService } from "@/hooks/use-dialog-service";
-import { useAuthContract } from "@/hooks/contract/use-auth-contract";
 import { tryCatch } from "@shared/try-catch";
+import { useAuthContract } from "@/hooks/contract/use-auth-contract";
+import { useDialogService } from "@/hooks/use-dialog-service";
+import { cn } from "@/lib/utils";
+import { useAppForm } from "./core/app-form";
 
 export const RequestResetPasswordForm = ({
   className,
@@ -30,7 +30,7 @@ export const RequestResetPasswordForm = ({
       }
 
       await dialogService.alert(
-        "비밀번호 재설정 이메일이 발송되었습니다. 메일을 확인해주세요."
+        "비밀번호 재설정 이메일이 발송되었습니다. 메일을 확인해주세요.",
       );
     },
   });
@@ -46,12 +46,11 @@ export const RequestResetPasswordForm = ({
     >
       <form.AppForm>
         <form.Fieldset>
-          <form.AppField
-            name="email"
-            children={(field) => (
+          <form.AppField name="email">
+            {(field) => (
               <field.TextField placeholder="회원가입 시 입력한 이메일을 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
         </form.Fieldset>
 
         <form.SubmitButton>비밀번호 재설정</form.SubmitButton>

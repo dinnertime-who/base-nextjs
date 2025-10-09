@@ -1,7 +1,7 @@
 // src/emails/templates/WelcomeEmail.tsx
-import { Heading, Text, Hr } from "@react-email/components";
-import { EmailLayout } from "../components/email-layout";
+import { Heading, Hr, Text } from "@react-email/components";
 import { EmailButton } from "../components/email-button";
+import { EmailLayout } from "../components/email-layout";
 
 type VerificationEmailProps = {
   verificationUrl: string;

@@ -59,7 +59,11 @@ function getIpValue(headerList: Headers) {
   for (const header of IP_HEADERS) {
     // x-forwarded-for는 쉼표로 구분된 IP 목록 (첫 번째가 원본 클라이언트 IP)
     if (header === "x-forwarded-for") {
-      const firstIp = headerList.get(header)!.split(",")[0].trim();
+      const value = headerList.get(header);
+      if (!value) {
+        continue;
+      }
+      const firstIp = value.split(",")[0].trim();
       return firstIp;
     }
 

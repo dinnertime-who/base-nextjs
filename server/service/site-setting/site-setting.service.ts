@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "@server/db";
-import { siteSetting, SiteSettingEnum } from "@server/db/schema";
+import { type SiteSettingEnum, siteSetting } from "@server/db/schema";
 
 export const getSiteSettings = async () => {
   const result = await db.query.siteSetting.findMany();

@@ -1,8 +1,8 @@
 import { SetUpAdminUserSchema } from "@shared/schema/set-up-admin-user.schema";
 import {
   initContract,
-  ServerInferRequest,
-  ServerInferResponseBody,
+  type ServerInferRequest,
+  type ServerInferResponseBody,
 } from "@ts-rest/core";
 import z from "zod";
 

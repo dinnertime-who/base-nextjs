@@ -1,37 +1,33 @@
 "use client";
 
-import * as React from "react";
 import type { Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
 // --- Icons ---
 import { CornerDownLeftIcon } from "@tiptap-editor/tiptap-icons/corner-down-left-icon";
 import { ExternalLinkIcon } from "@tiptap-editor/tiptap-icons/external-link-icon";
 import { LinkIcon } from "@tiptap-editor/tiptap-icons/link-icon";
 import { TrashIcon } from "@tiptap-editor/tiptap-icons/trash-icon";
-
 // --- Tiptap UI ---
 import type { UseLinkPopoverConfig } from "@tiptap-editor/tiptap-ui/link-popover";
 import { useLinkPopover } from "@tiptap-editor/tiptap-ui/link-popover";
-
 // --- UI Primitives ---
 import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Button, ButtonGroup } from "@tiptap-editor/tiptap-ui-primitive/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@tiptap-editor/tiptap-ui-primitive/popover";
-import { Separator } from "@tiptap-editor/tiptap-ui-primitive/separator";
 import {
   Card,
   CardBody,
   CardItemGroup,
 } from "@tiptap-editor/tiptap-ui-primitive/card";
 import { Input, InputGroup } from "@tiptap-editor/tiptap-ui-primitive/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@tiptap-editor/tiptap-ui-primitive/popover";
+import { Separator } from "@tiptap-editor/tiptap-ui-primitive/separator";
+import * as React from "react";
+// --- Hooks ---
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 
 export interface LinkMainProps {
   /**

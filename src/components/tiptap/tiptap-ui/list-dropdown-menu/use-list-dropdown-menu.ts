@@ -1,26 +1,22 @@
 "use client";
 
-import * as React from "react";
 import type { Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
 // --- Icons ---
 import { ListIcon } from "@tiptap-editor/tiptap-icons/list-icon";
 import { ListOrderedIcon } from "@tiptap-editor/tiptap-icons/list-ordered-icon";
 import { ListTodoIcon } from "@tiptap-editor/tiptap-icons/list-todo-icon";
-
-// --- Lib ---
-import { isNodeInSchema } from "@/lib/tiptap-utils";
-
 // --- Tiptap UI ---
 import {
   canToggleList,
   isListActive,
-  listIcons,
   type ListType,
+  listIcons,
 } from "@tiptap-editor/tiptap-ui/list-button";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { isNodeInSchema } from "@/lib/tiptap-utils";
 
 /**
  * Configuration for the list dropdown menu functionality

@@ -1,13 +1,11 @@
 "use client";
 
-import * as React from "react";
-
-// --- UI Primitives ---
-import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
-
 // --- Icons ---
 import { MoonStarIcon } from "@tiptap-editor/tiptap-icons/moon-star-icon";
 import { SunIcon } from "@tiptap-editor/tiptap-icons/sun-icon";
+// --- UI Primitives ---
+import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
+import * as React from "react";
 
 export function ThemeToggle() {
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);

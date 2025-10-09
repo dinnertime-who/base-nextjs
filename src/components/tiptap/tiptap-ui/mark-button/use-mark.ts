@@ -1,14 +1,6 @@
 "use client";
 
-import * as React from "react";
 import type { Editor } from "@tiptap/react";
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-
-// --- Lib ---
-import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils";
-
 // --- Icons ---
 import { BoldIcon } from "@tiptap-editor/tiptap-icons/bold-icon";
 import { Code2Icon } from "@tiptap-editor/tiptap-icons/code2-icon";
@@ -17,6 +9,11 @@ import { StrikeIcon } from "@tiptap-editor/tiptap-icons/strike-icon";
 import { SubscriptIcon } from "@tiptap-editor/tiptap-icons/subscript-icon";
 import { SuperscriptIcon } from "@tiptap-editor/tiptap-icons/superscript-icon";
 import { UnderlineIcon } from "@tiptap-editor/tiptap-icons/underline-icon";
+import * as React from "react";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils";
 
 export type Mark =
   | "bold"

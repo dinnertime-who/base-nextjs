@@ -1,11 +1,11 @@
 "use client";
 
-import { useAppForm } from "./core/app-form";
-import { cn } from "@/lib/utils";
 import { SetUpAdminUserSchema } from "@shared/schema/set-up-admin-user.schema";
 import { useRouter } from "next/navigation";
-import { useDialogService } from "@/hooks/use-dialog-service";
 import { useAuthContract } from "@/hooks/contract/use-auth-contract";
+import { useDialogService } from "@/hooks/use-dialog-service";
+import { cn } from "@/lib/utils";
+import { useAppForm } from "./core/app-form";
 
 export const SetUpAdminUserForm = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -50,26 +50,21 @@ export const SetUpAdminUserForm = ({ className }: { className?: string }) => {
     >
       <form.AppForm>
         <form.Fieldset>
-          <form.AppField
-            name="name"
-            children={(field) => (
-              <field.TextField placeholder="이름을 입력해주세요." />
-            )}
-          ></form.AppField>
+          <form.AppField name="name">
+            {(field) => <field.TextField placeholder="이름을 입력해주세요." />}
+          </form.AppField>
 
-          <form.AppField
-            name="email"
-            children={(field) => (
+          <form.AppField name="email">
+            {(field) => (
               <field.TextField placeholder="이메일을 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
 
-          <form.AppField
-            name="password"
-            children={(field) => (
+          <form.AppField name="password">
+            {(field) => (
               <field.PasswordField placeholder="비밀번호를 입력해주세요." />
             )}
-          ></form.AppField>
+          </form.AppField>
         </form.Fieldset>
 
         <form.SubmitButton>완료</form.SubmitButton>

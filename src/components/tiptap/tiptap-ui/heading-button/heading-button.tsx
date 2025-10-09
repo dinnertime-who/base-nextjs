@@ -1,10 +1,5 @@
 "use client";
 
-import * as React from "react";
-
-// --- Lib ---
-import { parseShortcutKeys } from "@/lib/tiptap-utils";
-
 // --- Tiptap UI ---
 import type {
   Level,
@@ -14,12 +9,14 @@ import {
   HEADING_SHORTCUT_KEYS,
   useHeading,
 } from "@tiptap-editor/tiptap-ui/heading-button";
-
+import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
 // --- UI Primitives ---
 import type { ButtonProps } from "@tiptap-editor/tiptap-ui-primitive/button";
 import { Button } from "@tiptap-editor/tiptap-ui-primitive/button";
-import { Badge } from "@tiptap-editor/tiptap-ui-primitive/badge";
+import * as React from "react";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { parseShortcutKeys } from "@/lib/tiptap-utils";
 
 export interface HeadingButtonProps
   extends Omit<ButtonProps, "type">,
@@ -102,7 +99,6 @@ export const HeadingButton = React.forwardRef<
         type="button"
         data-style="ghost"
         data-active-state={isActive ? "on" : "off"}
-        role="button"
         tabIndex={-1}
         disabled={!canToggle}
         data-disabled={!canToggle}

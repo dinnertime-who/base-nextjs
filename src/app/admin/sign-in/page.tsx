@@ -1,6 +1,6 @@
-import { SignInForm } from "@/components/form/sign-in.form";
 import { getHasSetup } from "@server/service/auth/setup.service";
 import { redirect } from "next/navigation";
+import { SignInForm } from "@/components/form/sign-in.form";
 
 export default async function SignInPage() {
   const hasSetup = await getHasSetup();

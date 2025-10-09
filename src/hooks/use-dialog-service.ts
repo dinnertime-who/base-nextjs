@@ -24,22 +24,22 @@ type DialogServiceState = Record<
 type DialogServiceAction = {
   setMessage: <T extends DialogServiceType>(
     type: T,
-    message: DialogServiceState[T]["message"]
+    message: DialogServiceState[T]["message"],
   ) => void;
   setButtonText: <T extends DialogServiceType>(
     type: T,
-    text: DialogServiceState[T]["buttonText"]
+    text: DialogServiceState[T]["buttonText"],
   ) => void;
   setTitle: <T extends DialogServiceType>(
     type: T,
-    title: DialogServiceState[T]["title"]
+    title: DialogServiceState[T]["title"],
   ) => void;
   open: <T extends DialogServiceType>(type: T) => void;
   close: <T extends DialogServiceType>(type: T) => void;
   clear: <T extends DialogServiceType>(type: T) => void;
   setClickAction: <T extends DialogServiceType>(
     type: T,
-    onClickAction: (result: boolean) => void
+    onClickAction: (result: boolean) => void,
   ) => void;
 };
 
@@ -77,10 +77,10 @@ export const useDialogServiceStore = create<
       set((prev) => ({ [type]: { ...prev[type], isOpened: true } })),
     close: (type) =>
       set((prev) => ({ [type]: { ...prev[type], isOpened: false } })),
-    clear: (type) => set((prev) => ({ [type]: DIALOG_SERVICE_DEFAULT[type] })),
+    clear: (type) => set((_prev) => ({ [type]: DIALOG_SERVICE_DEFAULT[type] })),
     setClickAction: (type, onClickAction) =>
       set((prev) => ({ [type]: { ...prev[type], onClickAction } })),
-  }))
+  })),
 );
 
 export function useDialogService() {
@@ -89,7 +89,7 @@ export function useDialogService() {
   const asyncPrompt = (
     type: DialogServiceType,
     message: string,
-    option?: { buttonText: string }
+    option?: { buttonText: string },
   ) => {
     dialogServiceStore.setButtonText(type, option?.buttonText || "확인");
     dialogServiceStore.setMessage(type, message);
