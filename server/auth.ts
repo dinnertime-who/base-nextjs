@@ -2,9 +2,12 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@server/db";
 import * as schema from "@server/db/schema";
-import { admin, organization } from "better-auth/plugins";
+import { admin, createAuthMiddleware, organization } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import * as bcrypt from "bcrypt-ts";
+import { user } from "@server/db/schema";
+import { and, eq } from "drizzle-orm";
+import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -27,9 +30,21 @@ export const auth = betterAuth({
     enabled: true,
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, token, url }, request) => {
-      console.log(`Sending verification email to ${user.email}: ${token}`);
+    expiresIn: VERIFICATION_EXPIRES_IN,
+    sendVerificationEmail: async ({ user: emailUser, token, url }, request) => {
+      console.log(`Sending verification email to ${emailUser.email}: ${token}`);
       console.log(url);
+
+      setTimeout(async () => {
+        const targetUser = await db.query.user.findFirst({
+          columns: { emailVerified: true },
+          where: eq(user.id, emailUser.id),
+        });
+
+        if (targetUser) {
+          await db.delete(user).where(eq(user.id, emailUser.id));
+        }
+      }, VERIFICATION_EXPIRES_IN * 1000);
     },
   },
   account: {

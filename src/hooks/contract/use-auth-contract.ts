@@ -60,6 +60,7 @@ export const useAuthContract = () => {
         email: data.email,
         password: data.password,
         name: data.name,
+        callbackURL: "/",
       });
 
       if (res.data) {
