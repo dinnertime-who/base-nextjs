@@ -8,6 +8,8 @@ import * as bcrypt from "bcrypt-ts";
 import { user } from "@server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { VERIFICATION_EXPIRES_IN } from "@shared/constants/auth";
+import { sendVerificationEmail } from "./service/email/email.service";
+import { tryCatch } from "@shared/try-catch";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -32,8 +34,13 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     expiresIn: VERIFICATION_EXPIRES_IN,
     sendVerificationEmail: async ({ user: emailUser, token, url }, request) => {
-      console.log(`Sending verification email to ${emailUser.email}: ${token}`);
-      console.log(url);
+      const { error } = await tryCatch(async () => {
+        await sendVerificationEmail({ to: emailUser.email, url });
+      });
+
+      if (error) {
+        console.error(error);
+      }
 
       setTimeout(async () => {
         const targetUser = await db.query.user.findFirst({
