@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // React Compiler 활성화
   experimental: {
+    // React Compiler 활성화
     reactCompiler: true,
-    viewTransition: true,
+
+    // 서버 소스맵 비활성화
+    serverSourceMaps: false,
   },
 
   // powered by 비활성화
@@ -23,11 +25,15 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: false,
   },
 
+  // 소스맵 비활성화
+  productionBrowserSourceMaps: false,
+
   // Docker 배포를 위한 standalone 출력
   output: "standalone",
 
   // 이미지 최적화 설정
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
