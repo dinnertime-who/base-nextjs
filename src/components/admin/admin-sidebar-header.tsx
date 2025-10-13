@@ -19,7 +19,6 @@ export function AdminSidebarHeader() {
                 <span className="font-semibold">
                   {process.env.NEXT_PUBLIC_APP_NAME}
                 </span>
-                <span className="text-xs">관리자</span>
               </div>
             </Link>
           </SidebarMenuButton>

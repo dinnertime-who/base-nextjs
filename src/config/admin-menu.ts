@@ -38,13 +38,13 @@ export const adminMenuConfig: AdminMenuGroup[] = [
       {
         id: "users",
         title: "회원 관리",
-        href: "/admin/users",
+        href: "/admin/members",
         icon: UsersIcon,
         items: [
           {
             id: "users-all",
             title: "전체 회원",
-            href: "/admin/users",
+            href: "/admin/members",
           },
         ],
       },

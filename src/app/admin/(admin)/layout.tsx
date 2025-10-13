@@ -33,7 +33,9 @@ export default async function AdminLayout({
       </HydrationBoundary>
       <SidebarInset>
         <AdminHeader />
-        <main className="flex flex-1 flex-col gap-4 p-4">{children}</main>
+        <main className="flex flex-1 flex-col gap-4 p-4 sm:p-8">
+          <section className="container mx-auto">{children}</section>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );
